@@ -59,7 +59,7 @@
                            RelativePanel.AlignLeftWith="TypeText">
                     <Run Text="{x:Bind who}" />
                     <LineBreak />
-                    <Run Text="{x:Bind publishedAt, Converter={StaticResource StrFormatConverter}, ConverterParameter=\{0:yy/MM/dd\}}" />
+                    <Run Text="{x:Bind publishedAt, Converter={StaticResource ReadableDateConverter}}" />
                 </TextBlock>
 
                 <BitmapIcon Name="TypeIcon"

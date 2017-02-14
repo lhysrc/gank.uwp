@@ -81,5 +81,19 @@ namespace GankIO.Common
                 return $"{dsize:0.00}B";
             }
         }
+
+        public static string ReadableDate(this DateTime date,string format="yyyy/MM/dd")
+        {
+            var today = DateTime.Today;
+            switch ((date.Date - today).Days)
+            {
+                case -2: return "前天";
+                case -1: return "昨天";
+                case 0: return "今天";
+                case 1: return "明天";
+                case 2: return "后天";
+                default:return date.ToString(format);
+            }
+        }
     }
 }

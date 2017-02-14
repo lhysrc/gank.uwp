@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:resx="using:GankIO.Resources"
                     xmlns:cvts="using:Template10.Converters"
                     xmlns:kcvts="using:Microsoft.Toolkit.Uwp.UI.Converters">
     <cvts:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
@@ -58,4 +59,6 @@
     <kcvts:StringVisibilityConverter x:Key="StringVisibilityConverter" />
     <kcvts:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <kcvts:BoolToObjectConverter x:Key="BoolReverseConverter" TrueValue="False" FalseValue="True" />
+
+    <resx:ReadableDateConverter x:Key="ReadableDateConverter" />
 </ResourceDictionary>

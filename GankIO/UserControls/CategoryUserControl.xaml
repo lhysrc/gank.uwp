@@ -75,7 +75,7 @@
                        RelativePanel.AlignVerticalCenterWithPanel="True">
                 <Run Text="{x:Bind Item.who}" />
                 <Span />
-                <Run Text="{x:Bind Item.publishedAt, Converter={StaticResource StrFormatConverter}, ConverterParameter=\{0:yy/MM/dd\}}" />
+                <Run Text="{x:Bind Item.publishedAt, Converter={StaticResource ReadableDateConverter}}" />
             </TextBlock>
 
         </RelativePanel>

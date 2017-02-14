@@ -101,6 +101,7 @@
     <Compile Include="Resources\CategoryTemplate.xaml.cs">
       <DependentUpon>CategoryTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Converters.cs" />
     <Compile Include="UserControls\CategoryUserControl.xaml.cs">
       <DependentUpon>CategoryUserControl.xaml</DependentUpon>
     </Compile>

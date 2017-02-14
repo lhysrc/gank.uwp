@@ -106,16 +106,20 @@ namespace GankIO.Views
             grid.ItemHeight = grid.ItemWidth * 3 / 4;
         }
 
-        private async void FlipView_Tapped(object sender, TappedRoutedEventArgs e)
+        private void FlipView_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var pt = e.GetPosition(imageFlipView);
 
             if (pt.X < 50 || pt.Y < 50 ||
                imageFlipView.ActualWidth - pt.X < 50 ||
-                imageFlipView.ActualHeight - pt.Y < 50
-                ) return;
+                imageFlipView.ActualHeight - pt.Y < 50) return;
             //fadeOutStoryboard.Begin();
 
+            hideFlipView();
+        }
+
+        private async void hideFlipView()
+        {
             await imageFlipView.Fade(0).StartAsync();
             imageFlipView.Visibility = Visibility.Collapsed;
         }
@@ -183,7 +187,7 @@ namespace GankIO.Views
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            imageFlipView.Visibility = Visibility.Collapsed;
+            hideFlipView();
         }
 
         private void ItemsGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
