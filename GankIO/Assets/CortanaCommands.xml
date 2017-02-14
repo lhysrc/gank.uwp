@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.1">
+
+  <CommandSet xml:lang="zh-CN" Name="ExampleAppCommandSet_zh-CN">
+    <CommandPrefix> [在]干货[里] </CommandPrefix>
+    <Example> 来些福利 </Example>
+
+    <Command Name="fuli">
+      <Example> 来些福利  </Example>
+      <ListenFor> 来些[干货]妹子 </ListenFor>
+      <ListenFor> 来些福利 </ListenFor>
+      <Feedback> 正在给您准备干货妹子…… </Feedback>
+      <Navigate/>
+    </Command>
+
+    <Command Name="category">
+      <Example> 来些文章 </Example>
+      <ListenFor> [随便]来些文章 </ListenFor>
+      <ListenFor> [随便]来些{type}[的]文章 </ListenFor>
+      <Feedback> 正在打开干货应用…… </Feedback>
+      <Navigate/>
+    </Command>
+
+    
+    <PhraseList Label="type">
+      <Item>安卓</Item>
+      <Item>苹果</Item>
+    </PhraseList>
+
+  </CommandSet>
+
+  <!-- Other CommandSets for other languages -->
+
+</VoiceCommands>

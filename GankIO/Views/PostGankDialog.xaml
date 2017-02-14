@@ -1,0 +1,42 @@
+﻿<ContentDialog x:Class="GankIO.Views.PostGankDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:local="using:GankIO.Views"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               Title="提交干货" RequestedTheme="Default"
+               Loaded="ContentDialog_Loaded"
+               PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+               PrimaryButtonText="取消"
+               SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+               SecondaryButtonText="提交"
+               mc:Ignorable="d">
+
+    <StackPanel>
+        <StackPanel.Resources>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="0,15,0,0" />
+            </Style>
+        </StackPanel.Resources>
+        <TextBox Header="网页地址（Url）" Text="{x:Bind url, Mode=TwoWay}" />
+        <TextBox Header="干货内容描述" Text="{x:Bind desc, Mode=TwoWay}" />
+        <ComboBox Name="TypeComboBox"
+                  Margin="0,15,0,0"
+                  HorizontalAlignment="Stretch"
+                  Header="干货类型"
+                  SelectedItem="{x:Bind type, Mode=TwoWay}" />
+        <TextBox Header="提交人" Name="Publisher" Text="{x:Bind who, Mode=TwoWay}" />
+
+        <ProgressBar Name="PostingProgressBar"
+                     Width="auto"
+                     Height="10"
+                     IsIndeterminate="True"
+                     Visibility="Collapsed" />
+
+
+        <TextBlock Name="MsgText"
+                   Margin="0,15"
+                   HorizontalAlignment="Center"
+                   TextWrapping="Wrap" />
+    </StackPanel>
+</ContentDialog>

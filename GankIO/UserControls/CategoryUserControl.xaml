@@ -1,0 +1,114 @@
+﻿<UserControl Name="This"
+             x:Class="GankIO.UserControls.CategoryUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tkCtrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="110"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
+    <Grid MaxHeight="120">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="82" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Border x:Name="BorderTop"
+                Grid.ColumnSpan="2"
+                Height="2"
+                Margin="0,2,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                Background="{ThemeResource SystemControlBackgroundAccentBrush}" />
+        <TextBlock Name="DescTextBlock"
+                   MinHeight="50"
+                   MaxHeight="80"
+                   Margin="2"
+                   Padding="0,8"
+                   MaxLines="3"
+                   Text="{x:Bind Item.desc}"
+                   TextWrapping="Wrap"
+                   ToolTipService.ToolTip="{Binding Text, ElementName=DescTextBlock}" />
+        <tkCtrl:ImageEx Name="SmallImage" IsCacheEnabled="True"
+               Grid.RowSpan="2"
+               Grid.Column="1"
+               MaxWidth="110"
+               MaxHeight="{Binding MaxWidth, RelativeSource={RelativeSource Mode=Self}}"
+               Margin="2,6,0,2"
+               x:DeferLoadStrategy="Lazy"
+               Source="{x:Bind Item.images[0], ConverterParameter=110, Converter={StaticResource cvtSmallImage}}"
+               Stretch="UniformToFill">
+            <ToolTipService.ToolTip>
+                <tkCtrl:ImageEx Width="auto" IsCacheEnabled="True"
+                       Height="auto"
+                       Source="{x:Bind Item.images[0]}"
+                       Stretch="Uniform" />
+
+            </ToolTipService.ToolTip>
+        </tkCtrl:ImageEx>
+        <RelativePanel Name="BottomPanel"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="1"
+                       Padding="0,0,5,0"
+                       VerticalAlignment="Bottom">
+            <BitmapIcon Name="TypeIcon"
+                        Width="30"
+                        Height="30"
+                        Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                        RelativePanel.AlignLeftWithPanel="True"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
+                        UriSource="{Binding PathIcon, ElementName=This}" />
+
+            <TextBlock FontSize="14"
+                       Foreground="#777777"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       RelativePanel.RightOf="TypeIcon"
+                       Text="{x:Bind Item.type}" />
+            <TextBlock FontSize="14"
+                       Foreground="#777777"
+                       RelativePanel.AlignRightWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True">
+                <Run Text="{x:Bind Item.who}" />
+                <Span />
+                <Run Text="{x:Bind Item.publishedAt, Converter={StaticResource StrFormatConverter}, ConverterParameter=\{0:yy/MM/dd\}}" />
+            </TextBlock>
+
+        </RelativePanel>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters >
+                        
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomPanel.(Grid.Row)" Value="2" />
+                        <Setter Target="BottomPanel.(Grid.ColumnSpan)" Value="2" />
+                        <Setter Target="SmallImage.MaxWidth" Value="80" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters >
+                       
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+
+</UserControl>

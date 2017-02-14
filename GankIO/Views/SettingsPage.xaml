@@ -1,0 +1,258 @@
+﻿<Page x:Class="GankIO.Views.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Behaviors="using:Template10.Behaviors"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:converter="using:Template10.Converters"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:GankIO.Views"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tkCtrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:vm="using:GankIO.ViewModels"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <local:DirSizeConverter x:Key="DirSizeConverter" />
+    </Page.Resources>
+    <Page.DataContext>
+        <vm:SettingsPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!--  header  -->
+        <controls:PageHeader x:Name="pageHeader"
+                             Content="设置"
+                             Frame="{x:Bind Frame}"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" />
+
+        <!--  content  -->
+        <Pivot x:Name="MyPivot"
+               Grid.Row="1"
+               EntranceNavigationTransitionInfo.IsTargetElement="True"
+               RelativePanel.AlignLeftWithPanel="True"
+               RelativePanel.AlignRightWithPanel="True"
+               RelativePanel.Below="pageHeader">
+
+            <!--  settings  -->
+            <PivotItem DataContext="{Binding SettingsPartViewModel}" Header="设置">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ProgressBar Grid.Row="0"
+                                 Width="auto"
+                                 Height="10"
+                                 IsIndeterminate="True"
+                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <ScrollViewer Grid.Row="1"
+                                  Margin="0,0,-12,0"
+                                  HorizontalContentAlignment="Left"
+                                  VerticalScrollBarVisibility="Auto">
+                        <RelativePanel MinWidth="240" HorizontalAlignment="Left">
+
+                            <ToggleSwitch x:Name="UseShellDrawnBackButtonToggleSwtich"
+                                          Header="后退按钮"
+                                          IsOn="{Binding UseShellBackButton, Mode=TwoWay}"
+                                          OffContent="页面头部"
+                                          OnContent="标题栏或任务栏"
+                                          RelativePanel.AlignTopWithPanel="True"
+                                          RelativePanel.RightOf="UseLightThemeToggleSwitch" />
+
+                            <ToggleSwitch x:Name="UseLightThemeToggleSwitch"
+                                          Header="主题"
+                                          IsOn="{Binding UseLightThemeButton, Mode=TwoWay}"
+                                          OffContent="暗色"
+                                          OnContent="亮色"
+                                          RelativePanel.AlignLeftWithPanel="True"
+                                          RelativePanel.AlignTopWithPanel="True" />
+
+                            <ToggleSwitch x:Name="NeedToNofityToggleSwitch"
+                                          Margin="0,5"
+                                          Header="通知"
+                                          IsOn="{Binding NeedToNofity, Mode=TwoWay}"
+                                          OffContent="关闭"
+                                          OnContent="打开"
+                                          RelativePanel.AlignLeftWithPanel="True"
+                                          RelativePanel.Below="UseLightThemeToggleSwitch" />
+                            <ToggleSwitch x:Name="TileSettingToggleSwitch"
+                                          Margin="0,5"
+                                          Header="磁贴"
+                                          IsEnabled="{Binding IsLoading, Converter={StaticResource FalseWhenTrueConverter}}"
+                                          IsOn="{Binding ShowDayResult, Mode=TwoWay}"
+                                          OffContent="只显示福利"
+                                          OnContent="包含每日更新"
+                                          RelativePanel.AlignRightWithPanel="True"
+                                          RelativePanel.Below="UseLightThemeToggleSwitch"
+                                          RelativePanel.RightOf="NeedToNofityToggleSwitch" />
+                            <tkCtrl:HeaderedTextBlock Name="CacheSizeTextBlock"
+                                                      Margin="0,5"
+                                                      Header="缓存"
+                                                      RelativePanel.AlignLeftWithPanel="True"
+                                                      RelativePanel.Below="NeedToNofityToggleSwitch"
+                                                      Text="{Binding CacheSize, Converter={StaticResource DirSizeConverter}}" />
+                            <Button Margin="0,5,0,0"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ClearCacheCommand}"
+                                    Content="清除缓存"
+                                    RelativePanel.AlignLeftWith="TileSettingToggleSwitch"
+                                    RelativePanel.AlignVerticalCenterWith="CacheSizeTextBlock"
+                                    RelativePanel.Below="TileSettingToggleSwitch" />
+
+                            <!--<ToggleSwitch x:Name="IsFullScreenToggleSwitch"
+                                      Header="Page content is Full Screen"
+                                      IsOn="{Binding IsFullScreen, Mode=TwoWay}"
+                                      OffContent="Hamburger Menu is visible"
+                                      OnContent="Hamburger Menu is hidden"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.Below="ShowHamburgerButtonToggleSwitch" />-->
+
+                            <!--<TextBox x:Name="BusyTextTextBox"
+                                 Width="200"
+                                 Margin="0,12,0,0"
+                                 HorizontalAlignment="Left"
+                                 Header="Busy text"
+                                 RelativePanel.AlignLeftWithPanel="True"
+                                 RelativePanel.Below="IsFullScreenToggleSwitch"
+                                 Text="{Binding BusyText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Button Margin="12,0,0,0"
+                                Command="{x:Bind ViewModel.SettingsPartViewModel.ShowBusyCommand}"
+                                Content="Show Busy"
+                                RelativePanel.AlignBottomWith="BusyTextTextBox"
+                                RelativePanel.RightOf="BusyTextTextBox" />-->
+
+                        </RelativePanel>
+
+                    </ScrollViewer>
+                </Grid>
+            </PivotItem>
+
+            <!--  privacy  -->
+            <!--<PivotItem DataContext="{Binding SettingsPartViewModel}"
+                       Header="Privacy statement"
+                       Padding="0">
+                <ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Margin="0,12,24,12"
+                               LineHeight="24"
+                               TextWrapping="Wrap">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pharetra dictum nibh vel ornare. Donec sem urna, rhoncus sed cursus ac, aliquet at nisl. Pellentesque cursus et lacus vel porta. Morbi iaculis efficitur volutpat. Curabitur sit amet cursus nisl, ac suscipit mauris. Nulla a tellus a odio tincidunt maximus. Maecenas non eros lacus. Donec aliquam libero nec ex ullamcorper, in lobortis nibh dapibus. Mauris vehicula, tellus quis congue tincidunt, neque massa auctor ante, ut laoreet felis nisi id tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc sed dapibus quam, in viverra arcu. Vivamus ut metus non magna viverra porttitor a ultrices dui.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Vestibulum accumsan posuere elit vitae dignissim. Nulla facilisis nec sapien vel condimentum. Suspendisse urna nunc, luctus sit amet maximus in, finibus a erat. Mauris aliquam gravida sollicitudin. Aliquam a erat vitae dolor scelerisque maximus quis sit amet tellus. Nunc vitae nisi vulputate, consequat eros aliquet, tincidunt ante. Phasellus ultricies nisi eget porttitor consectetur. Nam lacinia nisi eget scelerisque mattis.
+                        <LineBreak />
+                        In vel imperdiet elit. Nunc vehicula libero vitae volutpat auctor. Vestibulum at interdum urna. Praesent eu velit at nisi convallis consectetur vitae vitae lorem. Phasellus semper arcu sit amet nisl pharetra aliquet. Suspendisse potenti. Proin in ipsum euismod, porttitor nisl quis, pulvinar eros. Curabitur sit amet rhoncus eros. Quisque risus elit, lacinia et aliquet at, dictum sit amet metus. Curabitur ut euismod erat.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Integer finibus aliquam accumsan. Ut porta quis ante et imperdiet. Curabitur sit amet nunc ligula. Sed porttitor dui dui, in finibus justo ullamcorper non. Mauris volutpat, nisi vel commodo auctor, arcu sem hendrerit elit, a cursus nulla felis at urna. Maecenas egestas volutpat diam, imperdiet vehicula nibh vulputate porta. Donec sed risus eget massa viverra fermentum eget et leo. Morbi a rutrum dui.
+                        <LineBreak />
+                        Mauris suscipit ac leo placerat auctor. Morbi tristique congue hendrerit. Fusce nec egestas dui, quis venenatis diam. Etiam viverra quis risus nec faucibus. Pellentesque efficitur tellus et volutpat bibendum. Cras tincidunt sem eget nisl aliquet venenatis. Vivamus at nisl eget sem vestibulum condimentum. Vivamus ut orci nec velit commodo fermentum a nec sem. Curabitur non consequat sapien.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Fusce ut nisl ante. Mauris in lobortis libero, eu sodales ex. Quisque nec nulla eget massa sodales blandit. Phasellus rutrum in orci in dictum. Pellentesque elit nulla, luctus iaculis fringilla at, ultrices vel mauris. Suspendisse finibus purus eu dui dignissim rhoncus. Donec accumsan metus id leo efficitur tristique. Curabitur placerat nibh risus, eu mollis nibh mollis in. Nullam velit nisi, porttitor eget dignissim viverra, euismod sed urna. Duis interdum nunc posuere semper tincidunt. Etiam suscipit porttitor magna id auctor. Maecenas suscipit risus tellus, eu viverra leo fringilla at. Aenean erat nisl, vehicula ut dapibus quis, molestie ac diam. Nulla egestas risus quis felis gravida, quis molestie tortor lobortis. Nullam aliquam orci et auctor suscipit.
+                        <LineBreak />
+                        Integer hendrerit tortor vitae augue auctor pulvinar. Aenean porta commodo est id interdum. Proin mattis nec nunc in ornare. Aliquam malesuada bibendum ante, vel hendrerit lectus blandit non. Vestibulum sit amet lorem venenatis, sollicitudin dolor eu, congue sapien. In lobortis quam orci. In ut imperdiet purus, in pharetra nunc. Praesent fermentum erat et vehicula volutpat. Morbi vitae sodales erat.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Nulla efficitur lectus eget dolor eleifend molestie. Aliquam sed iaculis metus, nec accumsan mauris. Donec id magna ac tellus tristique dignissim quis vel lacus. Integer nulla est, euismod at iaculis id, feugiat eu erat. In vel purus mattis, dictum dui et, luctus diam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet ornare nisi. Nunc in ante efficitur, posuere enim ac, lobortis est. Aenean pretium lacinia elit, at iaculis dui congue nec. Mauris scelerisque vestibulum hendrerit.
+                        <LineBreak />
+                        Donec scelerisque, est vel laoreet sollicitudin, nulla arcu blandit quam, quis fringilla nibh ipsum maximus leo. In varius mauris mauris, non maximus odio placerat quis. Sed tincidunt nulla at vulputate maximus. Praesent viverra vehicula mauris vitae commodo. Ut eget accumsan orci. Vestibulum condimentum, leo non consequat tempus, turpis justo pharetra ipsum, ut tempus purus ligula sit amet massa. Maecenas ante est, imperdiet in metus eu, tincidunt convallis dolor. Vivamus suscipit felis at laoreet laoreet. Vestibulum pharetra lacinia lorem, ut viverra lacus congue blandit. Sed at lorem neque. Phasellus ultricies nibh placerat mattis imperdiet. In rutrum sollicitudin lobortis. Aliquam a rhoncus lorem, pulvinar tempor libero.
+                    </TextBlock>
+                </ScrollViewer>
+            </PivotItem>-->
+
+            <!--  about  -->
+            <PivotItem Header="关于">
+                <RelativePanel DataContext="{Binding AboutPartViewModel}">
+
+                    <Border x:Name="LogoImage"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            BorderBrush="DimGray"
+                            BorderThickness="1"
+                            IsHitTestVisible="False"
+                            RelativePanel.AlignRightWithPanel="True"
+                            RelativePanel.AlignTopWithPanel="True">
+                        <Border.Background>
+                            <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
+                        </Border.Background>
+                        <Image Margin="12"
+                               Source="{Binding Logo}"
+                               Stretch="None" />
+                    </Border>
+
+                    <TextBlock x:Name="DisplayNameTextBlock"
+                               Margin="0,0,0,12"
+                               FontSize="24"
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.AlignRightWith="LogoImage"
+                               RelativePanel.AlignTopWithPanel="True"
+                               Text="{Binding DisplayName}" />
+
+                    <TextBlock x:Name="PublisherTextBlock"
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.Below="DisplayNameTextBlock"
+                               Text="{Binding Publisher}" />
+
+                    <TextBlock x:Name="VersionTextBlock"
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.Below="PublisherTextBlock">
+                        <Run>Version</Run>
+                        <Run Text="{Binding Version}" />
+                    </TextBlock>
+
+                </RelativePanel>
+            </PivotItem>
+        </Pivot>
+        <adUI:AdControl xmlns:adUI="using:Microsoft.Advertising.WinRT.UI"
+                        Width="300"
+                        Height="250"
+                        Margin="10,380,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        AdUnitId="333011"
+                        ApplicationId="05236aaa-193c-4453-b227-e4c815f14002"
+                        RelativePanel.AlignBottomWithPanel="True"
+                        RelativePanel.AlignHorizontalCenterWithPanel="True" />
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for narrow view  -->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for normal view  -->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for wide view  -->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </RelativePanel>
+
+</Page>

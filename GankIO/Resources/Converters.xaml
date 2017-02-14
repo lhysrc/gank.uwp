@@ -1,0 +1,61 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cvts="using:Template10.Converters"
+                    xmlns:kcvts="using:Microsoft.Toolkit.Uwp.UI.Converters">
+    <cvts:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
+        <cvts:ValueWhenConverter.When>
+            <x:Boolean>True</x:Boolean>
+        </cvts:ValueWhenConverter.When>
+        <cvts:ValueWhenConverter.Value>
+            <Visibility>Visible</Visibility>
+        </cvts:ValueWhenConverter.Value>
+        <cvts:ValueWhenConverter.Otherwise>
+            <Visibility>Collapsed</Visibility>
+        </cvts:ValueWhenConverter.Otherwise>
+    </cvts:ValueWhenConverter>
+    <cvts:ValueWhenConverter x:Key="AppBarDisplayModeConverter">
+        <cvts:ValueWhenConverter.When>
+            <x:Boolean>True</x:Boolean>
+        </cvts:ValueWhenConverter.When>
+        <cvts:ValueWhenConverter.Value>
+            <AppBarClosedDisplayMode>Compact</AppBarClosedDisplayMode>
+        </cvts:ValueWhenConverter.Value>
+        <cvts:ValueWhenConverter.Otherwise>
+            <AppBarClosedDisplayMode>Minimal</AppBarClosedDisplayMode>
+        </cvts:ValueWhenConverter.Otherwise>
+    </cvts:ValueWhenConverter>
+    <cvts:ValueWhenConverter x:Key="VisibleWhenNotNullConverter" When="{x:Null}">
+        <cvts:ValueWhenConverter.Value>
+            <Visibility>Collapsed</Visibility>
+        </cvts:ValueWhenConverter.Value>
+        <cvts:ValueWhenConverter.Otherwise>
+            <Visibility>Visible</Visibility>
+        </cvts:ValueWhenConverter.Otherwise>
+    </cvts:ValueWhenConverter>
+    <cvts:StringFormatConverter x:Key="StrFormatConverter" />
+    <cvts:ValueWhenConverter x:Name="FalseWhenTrueConverter">
+        <cvts:ValueWhenConverter.When>
+            <x:Boolean>True</x:Boolean>
+        </cvts:ValueWhenConverter.When>
+        <cvts:ValueWhenConverter.Value>
+            <x:Boolean>False</x:Boolean>
+        </cvts:ValueWhenConverter.Value>
+        <cvts:ValueWhenConverter.Otherwise>
+            <x:Boolean>True</x:Boolean>
+        </cvts:ValueWhenConverter.Otherwise>
+    </cvts:ValueWhenConverter>
+    <!--<cvts:ValueWhenConverter x:Key="BoolToNullableConverter">
+        <cvts:ValueWhenConverter.When>
+            <x:Boolean>True</x:Boolean>
+        </cvts:ValueWhenConverter.When>
+        <x:Nullable >
+            <Visibility>Visible</Visibility>
+        </x:Nullable>
+        <cvts:ValueWhenConverter.Otherwise>
+            <Visibility>Collapsed</Visibility>
+        </cvts:ValueWhenConverter.Otherwise>
+    </cvts:ValueWhenConverter>-->
+    <kcvts:StringVisibilityConverter x:Key="StringVisibilityConverter" />
+    <kcvts:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <kcvts:BoolToObjectConverter x:Key="BoolReverseConverter" TrueValue="False" FalseValue="True" />
+</ResourceDictionary>

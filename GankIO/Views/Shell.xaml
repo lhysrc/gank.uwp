@@ -1,0 +1,98 @@
+﻿<Page x:Class="GankIO.Views.Shell"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:views="using:GankIO.Views"
+      xmlns:t10Ctrls="using:Template10.Controls"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      mc:Ignorable="d">
+    <t10Ctrls:HamburgerMenu x:Name="MyHamburgerMenu">
+
+        <t10Ctrls:HamburgerMenu.PrimaryButtons>
+            <!--  mainpage button  -->
+            <t10Ctrls:HamburgerButtonInfo ClearHistory="False" PageType="views:MainPage">
+                <t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                    <ContinuumNavigationTransitionInfo />
+                </t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48"
+                                Height="48"
+                                Symbol="Home" />
+                    <TextBlock Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="首页" />
+                </StackPanel>
+            </t10Ctrls:HamburgerButtonInfo>
+            <t10Ctrls:HamburgerButtonInfo ClearHistory="False" PageType="views:CategorysPage">
+                <t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                    <EntranceNavigationTransitionInfo />
+                </t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48"
+                                Height="48"
+                                Symbol="List" />
+                    <TextBlock Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="全部" />
+                </StackPanel>
+            </t10Ctrls:HamburgerButtonInfo>
+            <t10Ctrls:HamburgerButtonInfo ClearHistory="False" PageType="views:PhotosPage">
+                <t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                    <DrillInNavigationTransitionInfo />
+                </t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48" />
+                    <TextBlock Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="福利" />
+                </StackPanel>
+            </t10Ctrls:HamburgerButtonInfo>
+        </t10Ctrls:HamburgerMenu.PrimaryButtons>
+
+        <t10Ctrls:HamburgerMenu.SecondaryButtons>
+            <t10Ctrls:HamburgerButtonInfo ButtonType="Literal">
+                <HyperlinkButton Margin="60,0" Tapped="HyperlinkButton_Tapped">http://gank.io</HyperlinkButton>                
+            </t10Ctrls:HamburgerButtonInfo>
+            <!--  profile button  -->
+            <!--<Controls:HamburgerButtonInfo ButtonType="Command">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:EventTriggerBehavior EventName="Tapped">
+                        <behaviors:MessageDialogAction Title="Show profile" Content="This is an example of a Command-type hamburger button. It does not navigate, only raises the Tapped event for some custom implementation." />
+                    </Core:EventTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+                <StackPanel Orientation="Horizontal">
+                    <ToolTipService.ToolTip>
+                        <TextBlock MaxWidth="225"
+                                   Text="This is the tooltip for the Show Profile command button. Remember to localize."
+                                   TextWrapping="Wrap" />
+                    </ToolTipService.ToolTip>
+                    <SymbolIcon Width="48"
+                                Height="48"
+                                Symbol="Contact" />
+                    <TextBlock Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="User profile" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>-->
+            <!--  settingspage button  -->
+            <t10Ctrls:HamburgerButtonInfo x:Name="SettingsButton"
+                                          PageParameter="0"
+                                          PageType="views:SettingsPage">
+                <t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                    <SlideNavigationTransitionInfo />
+                </t10Ctrls:HamburgerButtonInfo.NavigationTransitionInfo>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48"
+                                Height="48"
+                                Symbol="Setting" />
+                    <TextBlock Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="设置" />
+                </StackPanel>
+            </t10Ctrls:HamburgerButtonInfo>
+        </t10Ctrls:HamburgerMenu.SecondaryButtons>
+
+    </t10Ctrls:HamburgerMenu>
+
+</Page>

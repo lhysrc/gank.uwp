@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="GankIO.UserControls.WebUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tkUI="using:Microsoft.Toolkit.Uwp.UI"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <!--<WebView tkUI:WebViewExtensions.ContentUri="{x:Bind WebViewUri,Mode=OneWay}"-->
+        <WebView Name="MainWebView"
+                 NavigationStarting="WebView_NavigationStarting"
+                 NavigationFailed="WebView_NavigationFailed"
+                 NavigationCompleted="WebView_NavigationCompleted"
+                 ></WebView>
+        <ProgressBar Name="MyProgressRing" Height="10" Width="auto" Foreground="{ThemeResource SystemAccentColor}"
+                      IsIndeterminate="True" VerticalAlignment="Top"
+                      ></ProgressBar>
+        <CommandBar VerticalAlignment="Bottom" Background="#f02C2C2C"
+                    Foreground="White" Name="MainCommandBar"
+                    ClosedDisplayMode="{Binding IsChecked, Converter={StaticResource AppBarDisplayModeConverter}, ElementName=appBarToggleButton}">
+            <CommandBar.Content>
+                <StackPanel Orientation="Horizontal">
+                    <AppBarButton IsCompact="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}"
+                                  Icon="Back" Label="后退" Click="BackButton_Click"
+                                  IsEnabled="{Binding CanGoBack, ElementName=MainWebView}"
+                                  ></AppBarButton>
+                    <AppBarButton IsCompact="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}"
+                                  Icon="Cancel" Label="关闭" Click="CloseButton_Click" ></AppBarButton>
+                </StackPanel>
+            </CommandBar.Content>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Icon="Copy" Label="浏览器打开"
+                              Click="OpenInBrowerButton_Click"
+                              ></AppBarButton>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarToggleButton x:Name="appBarToggleButton" Label="固定"  ></AppBarToggleButton>
+                <AppBarSeparator></AppBarSeparator>
+                <AppBarButton Label="复制链接" Click="CopyButton_Click" ></AppBarButton>
+            </CommandBar.SecondaryCommands>
+
+
+        </CommandBar>
+    </Grid>
+
+</UserControl>

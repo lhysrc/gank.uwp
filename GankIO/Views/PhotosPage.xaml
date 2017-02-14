@@ -1,0 +1,272 @@
+﻿<Page x:Class="GankIO.Views.PhotosPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:data="using:GankIO.Models"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:t10Ctrls="using:Template10.Controls"
+      xmlns:tkCtrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:vm="using:GankIO.ViewModels"
+      mc:Ignorable="d">
+    <Page.DataContext>
+        <vm:PhotosPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+    <Page.Resources>
+
+        <!--<data:VariableSizedStyleSelector x:Key="VariableSizedStyleSelector"
+                                         DoubleWidthStyle="{StaticResource DoubleWidthGridViewItemStyle}"
+                                         NormalStyle="{StaticResource DefaultGridViewItemStyle}" />-->
+        <Style x:Key="DefaultGridViewItemStyle" TargetType="GridViewItem" />
+        <Style x:Key="DoubleWidthGridViewItemStyle"
+               BasedOn="{StaticResource DefaultGridViewItemStyle}"
+               TargetType="GridViewItem">
+            <Setter Property="VariableSizedWrapGrid.ColumnSpan" Value="2" />
+        </Style>
+        <!--<Storyboard x:Name="fadeOutStoryboard">
+            <FadeOutThemeAnimation TargetName="imageFlipView" Duration="0:0:0.5" />
+            <ObjectAnimationUsingKeyFrames EnableDependentAnimation="True"
+                                           Storyboard.TargetName="imageFlipView"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="Collapsed" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="fadeInStoryboard">
+            <FadeInThemeAnimation TargetName="imageFlipView" Duration="0:0:0.5" />
+            <ObjectAnimationUsingKeyFrames EnableDependentAnimation="True"
+                                           Storyboard.TargetName="imageFlipView"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="Visible" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>-->
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <t10Ctrls:PageHeader x:Name="pageHeader"
+                             Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+                             Text="福利">
+            <t10Ctrls:PageHeader.PrimaryCommands>
+                <AppBarButton Name="TopAppBarButton"
+                              Icon="Up"
+                              Label="回到顶部"
+                              Visibility="Collapsed" />
+
+                <AppBarToggleButton Click="AppBarButton_Click"
+                                    Icon="Shuffle"
+                                    IsChecked="{x:Bind ViewModel.IsRandom, Mode=TwoWay}"
+                                    IsThreeState="False"
+                                    Label="随机" />
+
+                <AppBarButton Name="RefreshAppBarButton"
+                              Click="{x:Bind ViewModel.Refresh}"
+                              Icon="Refresh"
+                              Label="刷新" />
+
+            </t10Ctrls:PageHeader.PrimaryCommands>
+
+
+        </t10Ctrls:PageHeader>
+        <RelativePanel Grid.Row="1">
+
+            <GridView x:Name="ItemsGridView"
+                      IncrementalLoadingTrigger="Edge"
+                      IsItemClickEnabled="True"
+                      IsSwipeEnabled="True"
+                      ItemClick="ItemsGridView_ItemClick"
+                      SelectionChanged="ItemsGridView_SelectionChanged"
+                      ItemsSource="{x:Bind ViewModel.Fulis, Mode=OneWay}"
+                      RelativePanel.AlignBottomWithPanel="True"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.AlignTopWithPanel="True"
+                      ShowsScrollingPlaceholders="True">
+                <!--  ItemContainerStyleSelector="{StaticResource VariableSizedStyleSelector}"  -->
+                <!--<Interactivity:Interaction.Behaviors>
+                <Core:EventTriggerBehavior EventName="DragItemsStarting">
+                    <Core:InvokeCommandAction Command="{Binding DrapStartingCommand}" CommandParameter="{Binding DropEvent, ElementName=ItemsGridView}" />
+                </Core:EventTriggerBehavior>
+            </Interactivity:Interaction.Behaviors>-->
+                <!--<GridView.Header>
+                <Image Height="350"
+                       Margin="5"
+                       Source="{x:Bind ViewModel.HeaderImage,Mode=OneWay}"
+                       Stretch="UniformToFill" />
+            </GridView.Header>-->
+                <GridView.Footer>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Height="30"
+                                   HorizontalAlignment="Center"
+                                   Visibility="{x:Bind ViewModel.ErrorMsg, Mode=OneWay, Converter={StaticResource StringVisibilityConverter}}">
+                            <Run Text="{x:Bind ViewModel.ErrorMsg, Mode=OneWay}" />
+                            <Hyperlink Click="{x:Bind ViewModel.LoadMoreData}">点击重试</Hyperlink>
+                        </TextBlock>
+                        <ProgressBar Width="auto"
+                                     Height="30"
+                                     IsIndeterminate="True"
+                                     Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
+                </GridView.Footer>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+
+                        <!--<VariableSizedWrapGrid Name="photosGrid"
+                                           ItemHeight="350"
+                                           ItemWidth="240"
+                                           Orientation="Horizontal"
+                                           SizeChanged="photosGrid_SizeChanged" />-->
+                        <ItemsWrapGrid Name="photosGrid"
+                                       ItemHeight="350"
+                                       ItemWidth="240"
+                                       Orientation="Horizontal"
+                                       SizeChanged="photosGrid_SizeChanged">
+                            <!--<ItemsWrapGrid.ChildrenTransitions>
+                                <PopupThemeTransition/>
+                            </ItemsWrapGrid.ChildrenTransitions>-->
+                        </ItemsWrapGrid>
+
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="data:福利">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="28" />
+                            </Grid.RowDefinitions>
+                            <tkCtrl:ImageEx Grid.RowSpan="2"
+                                            x:Phase="1"
+                                            ImageExOpened="ImageEx_ImageExOpened"
+                                            IsCacheEnabled="True"
+                                            PlaceholderSource="/Assets/sexy_girl.png"
+                                            PlaceholderStretch="None"
+                                            Source="{x:Bind url}"
+                                            Stretch="UniformToFill" />
+                            <Border Grid.Row="1"
+                                    Height="28"
+                                    VerticalAlignment="Bottom"
+                                    Background="#AA777777">
+                                <TextBlock HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0"
+                                           Foreground="White">
+                                    <Run Text="{x:Bind who}" />
+                                    <Span />
+                                    <Run Text="{x:Bind publishedAt, Converter={StaticResource StrFormatConverter}, ConverterParameter=\{0:yy/MM/dd\}}" />
+                                    <Span />
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+            </GridView>
+
+            <FlipView Name="imageFlipView"
+                      ItemsSource="{x:Bind ViewModel.Fulis, Mode=OneWay}"
+                      RelativePanel.AlignBottomWithPanel="True"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.AlignTopWithPanel="True"
+                      SelectedIndex="{Binding SelectedIndex, ElementName=ItemsGridView, Mode=TwoWay}"
+                      Tapped="FlipView_Tapped"
+                      Visibility="Collapsed">
+
+                <FlipView.ItemTemplate>
+                    <DataTemplate x:DataType="data:福利">
+                        <Grid>
+                            <Border Name="flipViewBackground" Background="#A0000000">
+                                <interactivity:Interaction.Behaviors>
+                                    <behaviors:Blur x:Name="BlurBehavior"
+                                                    AutomaticallyStart="True"
+                                                    Value="5" />
+                                </interactivity:Interaction.Behaviors>
+                            </Border>
+                            <!--<ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          MinZoomFactor="1"
+                                          VerticalScrollBarVisibility="Auto"
+                                          ZoomMode="Enabled">
+                                <Image Source="{x:Bind url}"
+                                       Stretch="Uniform" />
+                            </ScrollViewer>-->
+                            <tkCtrl:ImageEx HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsCacheEnabled="True"
+                                            Source="{x:Bind url}"
+                                            Stretch="Uniform" />
+                        </Grid>
+                    </DataTemplate>
+                </FlipView.ItemTemplate>
+            </FlipView>
+            <CommandBar Name="MainCommandBar"
+                        VerticalAlignment="Bottom"
+                        Background="#f02C2C2C"
+                        ClosedDisplayMode="{Binding IsChecked, Converter={StaticResource AppBarDisplayModeConverter}, ElementName=appBarToggleButton}"
+                        Foreground="White"
+                        RelativePanel.AlignBottomWithPanel="True"
+                        RelativePanel.AlignLeftWithPanel="True"
+                        RelativePanel.AlignRightWithPanel="True"
+                        Visibility="{Binding Visibility, ElementName=imageFlipView}">
+
+                <CommandBar.PrimaryCommands>
+                    <AppBarButton Click="SaveButton_Click"
+                                  Icon="Save"
+                                  Label="保存到相册" />
+                    <AppBarButton Click="PinButton_Click"
+                                  Icon="Pin"
+                                  Label="显示到磁贴" />
+                </CommandBar.PrimaryCommands>
+                <CommandBar.SecondaryCommands>
+                    <AppBarToggleButton x:Name="appBarToggleButton" Label="固定" />
+                    <!--<AppBarSeparator />
+                    <AppBarButton Click="CopyButton_Click" Label="复制链接" />-->
+                </CommandBar.SecondaryCommands>
+
+
+            </CommandBar>
+        </RelativePanel>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for narrow view  -->
+                        <!--<Setter Target="photosGrid.Orientation" Value="Horizontal" />-->
+                        <!--<Setter Target="photosGrid.MaximumRowsOrColumns" Value="5" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for normal view  -->
+                        <!--<Setter Target="photosGrid.Orientation" Value="Horizontal" />-->
+                        <!--<Setter Target="photosGrid.MaximumRowsOrColumns" Value="5" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for wide view  -->
+                        <!--<Setter Target="photosGrid.Orientation" Value="Vertical" />-->
+                        <!--<Setter Target="photosGrid.MaximumRowsOrColumns" Value="2" />-->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+
+</Page>
