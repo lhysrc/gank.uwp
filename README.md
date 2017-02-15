@@ -14,17 +14,17 @@ Gank.UWP为 [gank.io](http://gank.io/) 的**UWP**版第三方客户端。❣
 
 ### 每日视图
 
- ![mainpage1](imgs\mainpage1.jpg)
+ ![mainpage1](imgs/mainpage1.jpg)
 
 ### 分类干货
 
- ![all1](imgs\all1.jpg)
+ ![all1](imgs/all1.jpg)
 
 ### 福利视图
 
- ![fuli](imgs\fuli.jpg)
- ![fuli2](imgs\fuli2.jpg)   
- ![fuli4](imgs\fuli4.jpg)
+ ![fuli](imgs/fuli.jpg)
+ ![fuli2](imgs/fuli2.jpg)   
+ ![fuli4](imgs/fuli4.jpg)
 
 ### Win10相关
 
@@ -32,16 +32,16 @@ Gank.UWP为 [gank.io](http://gank.io/) 的**UWP**版第三方客户端。❣
 
   每日更新通知，用户操作时或每两小时进行检查，*非推送*。
 
-  ![toast1](imgs\toast1.jpg)
+  ![toast1](imgs/toast1.jpg)
 
 
 - 磁贴
 
   多种尺寸的磁贴显示。
 
-   ![tile1](imgs\tile1.jpg) 
+   ![tile1](imgs/tile1.jpg) 
 
-  ![tile3](imgs\tile3.jpg) ![tile2](imgs\tile2.jpg) 
+  ![tile3](imgs/tile3.jpg) ![tile2](imgs/tile2.jpg) 
 
 - 小娜
 
