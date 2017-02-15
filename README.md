@@ -56,7 +56,7 @@ Gank.UWP为 [gank.io](http://gank.io/) 的**UWP**版第三方客户端。❣
 
   ![tile1](imgs/tile1.jpg) 
 
-  ![tile3](imgs/tile3.jpg) ![tile2](imgs/tile2.jpg) 
+  ![tile3](imgs/tile3.jpg) ![tile2](imgs/tile2.jpg) ![tile5](imgs/tile5.jpg) ![tile6](imgs/tile6.jpg) 
 
 - 小娜
 

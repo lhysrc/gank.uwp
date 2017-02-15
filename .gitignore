@@ -214,3 +214,6 @@ ModelManifest.xml
 /test
 /BatchPing
 *.targets
+*.appx
+/GankIO/BundleArtifacts
+/GankIO/_pkginfo.txt
