@@ -10,6 +10,7 @@
       xmlns:local="using:GankIO.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:tkCtrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:tkUI="using:Microsoft.Toolkit.Uwp.UI"
       xmlns:vm="using:GankIO.ViewModels"
       mc:Ignorable="d">
     <Page.Resources>
@@ -198,7 +199,7 @@
                                RelativePanel.AlignLeftWithPanel="True"
                                RelativePanel.AlignRightWith="LogoImage"
                                RelativePanel.AlignTopWithPanel="True"
-                               Text="{Binding DisplayName}" />
+                               Text="{Binding DisplayName}" /> 
 
                     <TextBlock x:Name="PublisherTextBlock"
                                RelativePanel.AlignLeftWithPanel="True"
@@ -212,6 +213,20 @@
                         <Run Text="{Binding Version}" />
                     </TextBlock>
 
+                    <TextBlock x:Name="DescriptionTextBlock" 
+                               Margin="0 20 0 0" FontSize="20"
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.Below="VersionTextBlock"
+                               TextWrapping="Wrap">
+                        <Hyperlink NavigateUri="http://gank.io">干货集中营</Hyperlink> <Run FontSize="18" Text=" 第三方客户端" />
+                        <LineBreak />
+                        <Run FontSize="16">分享妹子图 和 技术干货，还有供大家中午休息的休闲视频</Run>
+                        <LineBreak />
+                        <LineBreak />
+                        <Run FontSize="18" Text="项目开源地址：" />
+                        <Hyperlink
+                            NavigateUri="https://github.com/lhysrc/gank.uwp">GitHub</Hyperlink>
+                    </TextBlock>
                 </RelativePanel>
             </PivotItem>
         </Pivot>

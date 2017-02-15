@@ -52,7 +52,10 @@
 
         <t10Ctrls:HamburgerMenu.SecondaryButtons>
             <t10Ctrls:HamburgerButtonInfo ButtonType="Literal">
-                <HyperlinkButton Margin="60,0" Tapped="HyperlinkButton_Tapped">http://gank.io</HyperlinkButton>                
+                <HyperlinkButton Margin="60,0"
+                                 NavigateUri="http://gank.io"
+                                 Content="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}"
+                                 ></HyperlinkButton>                
             </t10Ctrls:HamburgerButtonInfo>
             <!--  profile button  -->
             <!--<Controls:HamburgerButtonInfo ButtonType="Command">

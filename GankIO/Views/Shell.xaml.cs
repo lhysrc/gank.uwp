@@ -37,9 +37,11 @@ namespace GankIO.Views
             //HamburgerMenu.HamburgerButtonVisibility = _settings.ShowHamburgerButton ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private async void HyperlinkButton_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri("http://gank.io"));
-        }
+        //private async void HyperlinkButton_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        //{
+        //    var hb = (HyperlinkButton)sender;
+        //    hb.nav
+        //    await Windows.System.Launcher.LaunchUriAsync(new Uri("http://gank.io"));
+        //}
     }
 }
