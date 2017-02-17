@@ -21,6 +21,18 @@ namespace GankIO.Views
             //MainPivot.Items.Remove(AllPivotItem);
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+
+            if(_lastSelectedItem!=null &&
+               AdaptiveVisualStateGroup.CurrentState != VisualStateNarrow)
+            {
+                MainWebView.WebViewUri = new Uri(_lastSelectedItem.url);
+            }
+        }
+
         private void LayoutRoot_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             var item = MainPivot.SelectedItem as PivotItem;
@@ -43,7 +55,6 @@ namespace GankIO.Views
             }
             else
             {
-
                 MainWebView.WebViewUri = new Uri(_lastSelectedItem.url);
             }
         }

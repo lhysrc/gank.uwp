@@ -43,7 +43,17 @@ namespace GankIO.Views
         //    HistoryDates = (sender as FrameworkElement).Tag as DateTime[];
         //}
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
 
+
+            if (_lastSelectedItem != null &&
+               AdaptiveVisualStateGroup.CurrentState != VisualStateNarrow)
+            {
+                MainWebView.WebViewUri = new Uri(_lastSelectedItem.url);
+            }
+        }
 
         #region master detail
         private all _lastSelectedItem;
