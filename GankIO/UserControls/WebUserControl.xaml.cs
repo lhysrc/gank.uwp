@@ -42,13 +42,14 @@ namespace GankIO.UserControls
         private static void onUriChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var webuc = (WebUserControl)d;
-            webuc.MainWebView.NavigateToString("");
+            //webuc.MainWebView.NavigateToString("");
             webuc.MainWebView.Navigate(new Uri(e.NewValue.ToString()));
         }
 
         public async Task NavigateToDefaultPageAsync()
         {
-            MainWebView.Navigate(defaultUri);
+            WebViewUri = defaultUri;
+            //MainWebView.Navigate(defaultUri);
             await WebView.ClearTemporaryWebDataAsync();
         }
 
@@ -79,18 +80,20 @@ namespace GankIO.UserControls
         {
             await NavigateToDefaultPageAsync();
 
-            var page = this.FindAscendant<WebViewPage>();
+            var page = this.FindAscendant<Page>();
             if (page != null && page.Frame.CanGoBack)
                 page.Frame.GoBack();
         }
 
         private async void OpenInBrowerButton_Click(object sender, RoutedEventArgs e)
         {
+            if (WebViewUri == defaultUri) return;
             await Windows.System.Launcher.LaunchUriAsync(MainWebView.Source);
         }
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
+            if (WebViewUri == defaultUri) return;
             DataPackage dataPackage = new DataPackage();
             dataPackage.SetText(MainWebView.Source.ToString());
             Clipboard.SetContent(dataPackage);
