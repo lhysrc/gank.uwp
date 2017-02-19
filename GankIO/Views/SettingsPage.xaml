@@ -88,13 +88,15 @@
                                           OnContent="包含每日更新"
                                           RelativePanel.AlignRightWithPanel="True"
                                           RelativePanel.Below="UseLightThemeToggleSwitch"
-                                          RelativePanel.RightOf="NeedToNofityToggleSwitch" />
+                                          RelativePanel.RightOf="NeedToNofityToggleSwitch" 
+                                          ToolTipService.ToolTip="若磁贴长时不更新，可切换此按钮修复" />
                             <tkCtrl:HeaderedTextBlock Name="CacheSizeTextBlock"
                                                       Margin="0,5"
                                                       Header="缓存"
                                                       RelativePanel.AlignLeftWithPanel="True"
                                                       RelativePanel.Below="NeedToNofityToggleSwitch"
-                                                      Text="{Binding CacheSize, Converter={StaticResource DirSizeConverter}}" />
+                                                      Text="{Binding CacheSize, Converter={StaticResource DirSizeConverter}}" 
+                                                      ToolTipService.ToolTip="缓存包含福利和每日干货" />
                             <Button Margin="0,5,0,0"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding ClearCacheCommand}"
