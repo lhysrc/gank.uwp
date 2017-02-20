@@ -20,6 +20,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using GankIO.Services;
 using Windows.ApplicationModel.Core;
+using Microsoft.Services.Store.Engagement;
 
 namespace GankIO
 {
@@ -178,13 +179,15 @@ namespace GankIO
             //    if (a.WindowActivationState != CoreWindowActivationState.Deactivated)
             //        setTitleBar();
             //    //Debug.WriteLine("Activated. Theme = {0}", Application.Current.RequestedTheme);
-            //};
-
-
+            //};            
 
             if (startKind == StartKind.Launch)
             {
                 await RegisterLiveTileTask();
+
+                //注册从开发人员中心接收通知
+                var engagementManager = StoreServicesEngagementManager.GetDefault();
+                await engagementManager.RegisterNotificationChannelAsync();
             }
 
 
@@ -212,8 +215,17 @@ namespace GankIO
 
                 return;
             }
+            if (args.Kind == ActivationKind.ToastNotification)
+            {
 
-            
+                var toastActivationArgs = args as ToastNotificationActivatedEventArgs;
+
+                var engagementManager = StoreServicesEngagementManager.GetDefault();
+                string originalArgs = engagementManager.ParseArgumentsAndTrackAppLaunch(toastActivationArgs.Argument);
+
+                // 使用通知传递来的参数进行下一步
+            }
+
             await NavigationService.NavigateAsync(typeof(Views.MainPage));
             //await NavigationService.NavigateAsync(typeof(Views.SettingsPage));
         }
