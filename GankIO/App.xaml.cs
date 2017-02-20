@@ -211,9 +211,10 @@ namespace GankIO
         {
             BackgroundExecutionManager.RemoveAccess();
             var status = await BackgroundExecutionManager.RequestAccessAsync();
-            if (status == BackgroundAccessStatus.Unspecified || 
-                status == BackgroundAccessStatus.DeniedBySystemPolicy || //是否需要单独处理？
-                status == BackgroundAccessStatus.DeniedByUser)
+            if (status == BackgroundAccessStatus.Unspecified ||
+                status == BackgroundAccessStatus.Denied)
+                //status == BackgroundAccessStatus.DeniedBySystemPolicy || //是否需要单独处理？
+                //status == BackgroundAccessStatus.DeniedByUser)
             {
                 return;
             }
