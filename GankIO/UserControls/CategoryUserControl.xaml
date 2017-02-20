@@ -11,7 +11,7 @@
     <Grid MaxHeight="120">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" x:Name="SmallImageColumn"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition MaxHeight="82" />
@@ -80,7 +80,7 @@
 
         </RelativePanel>
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup" CurrentStateChanged="AdaptiveVisualStateGroup_CurrentStateChanged">
                 <VisualState x:Name="VisualStateNarrow">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
@@ -96,7 +96,7 @@
                     <VisualState.Setters>
                         <Setter Target="BottomPanel.(Grid.Row)" Value="2" />
                         <Setter Target="BottomPanel.(Grid.ColumnSpan)" Value="2" />
-                        <Setter Target="SmallImage.MaxWidth" Value="80" />
+                        <!--<Setter Target="SmallImageColumn.MaxWidth" Value="80" />-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">

@@ -50,5 +50,23 @@ namespace GankIO.UserControls
             //if (uc != null)
             //    uc.TypeIcon.UriSource = e.NewValue as Uri;
         }
+
+        private void AdaptiveVisualStateGroup_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
+        {
+            if (SmallImage == null)
+            {
+                SmallImageColumn.Width = new GridLength(0);
+                return;
+            }
+
+            if (e.NewState == VisualStateNormal)
+            {
+                SmallImageColumn.Width = new GridLength(80);
+            }
+            else
+            {
+                SmallImageColumn.Width = GridLength.Auto;
+            }
+        }
     }
 }
