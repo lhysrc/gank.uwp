@@ -108,6 +108,9 @@
     <Compile Include="UserControls\CategoryUserControl.xaml.cs">
       <DependentUpon>CategoryUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\FuliUserControl.xaml.cs">
+      <DependentUpon>FuliUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\PhotosPageViewModel.cs" />
     <Compile Include="ViewModels\CategorysPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -237,6 +240,10 @@
     <Page Include="Resources\Custom.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\FuliUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Busy.xaml">
       <Generator>MSBuild:Compile</Generator>

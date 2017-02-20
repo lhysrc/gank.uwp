@@ -28,11 +28,13 @@ namespace GankIO.Resources
 
     public class DayResultsDataTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate AndroidTemplate { get; set; }
-        public DataTemplate iOSTemplate { get; set; }
+        //public DataTemplate AndroidTemplate { get; set; }
+        //public DataTemplate iOSTemplate { get; set; }
+        //public DataTemplate NonImageTemplate { get; set; }
+
+
         public DataTemplate FuliTemplate { get; set; }
         public DataTemplate AllTemplate { get; set; }
-        public DataTemplate NonImageTemplate { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object o, DependencyObject container)
         {
