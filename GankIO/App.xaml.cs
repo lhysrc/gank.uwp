@@ -49,7 +49,6 @@ namespace GankIO
             #endregion            
 
             installCommand();
-            
         }
         #region 安装小娜命令
         private async void installCommand()
@@ -62,21 +61,24 @@ namespace GankIO
         }
 
         #endregion
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
-        {
-            Debug.WriteLine(e.Exception);
-        }
 
 
         #region 全局异常处理
-
-        private async void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            e.SetObserved();
+            ShowExceptionDetailMessageDialog(e.Exception, "Unobserved Task Exception :(");
+        }
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            await new MessageDialog("Application Unhandled Exception:\r\n" + 
-                GetExceptionDetailMessage(e.Exception), "爆了 :(").ShowAsync();
+            ShowExceptionDetailMessageDialog(e.Exception, "Application Unhandled Exception :(");
         }
-
+        private async void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            ShowExceptionDetailMessageDialog(e.Exception, "Synchronization Context Unhandled Exception :(");
+        }
         /// <summary>
         /// Should be called from OnActivated and OnLaunched
         /// </summary>
@@ -86,21 +88,32 @@ namespace GankIO
                 .Register()
                 .UnhandledException += SynchronizationContext_UnhandledException;
         }
+        
+        ////简化异步异常堆栈信息
+        //private string GetExceptionDetailMessage(Exception ex)
+        //{
+        //    return $"可将以下信息发送给开发者：\r\n{ex.Message}\r\n{ex.StackTraceEx()}";
+        //}
 
-        private async void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
+
+        private async void ShowExceptionDetailMessageDialog(Exception ex, string title)
         {
-            e.Handled = true;
-            await new MessageDialog("Synchronization Context Unhandled Exception:\r\n" + 
-                GetExceptionDetailMessage(e.Exception), "爆了 :(").ShowAsync();
+            //简化异步异常堆栈信息
+            var stackTrace = ex.StackTrace == null ? String.Empty : ex.StackTraceEx();
+            var msg = $"可将以下信息发送给开发者：\r\n{ex.Message}\r\n{stackTrace}";
+            
+            var dialog = new MessageDialog(msg, title);
+            
+            dialog.Commands.Add(new UICommand("发送", async cmd =>
+            {
+                var appName = Windows.ApplicationModel.Package.Current.DisplayName;
+                var uri = new Uri($"mailto:linhongyuan@outlook.com?subject=“{appName}”错误反馈&body={ title + msg }", UriKind.Absolute);
+                await Windows.System.Launcher.LaunchUriAsync(uri);
+            }));
+            dialog.Commands.Add(new UICommand("关闭"));
+
+            await dialog.ShowAsync();
         }
-
-        //简化异步异常堆栈信息
-        private string GetExceptionDetailMessage(Exception ex)
-        {
-            return $"{ex.Message}\r\n{ex.StackTraceEx()}";
-        }
-
-
 
 
 
@@ -154,11 +167,12 @@ namespace GankIO
             view.TitleBar.ButtonInactiveForegroundColor = Colors.Gray;
         }
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
-        { 
+        {
             RegisterExceptionHandlingSynchronizationContext();
+
+            //throw new Exception("Test Exception.");
+
             //setTitleBar();
-
-
             //Window.Current.CoreWindow.Activated += (s, a) =>
             //{
             //    if (a.WindowActivationState != CoreWindowActivationState.Deactivated)

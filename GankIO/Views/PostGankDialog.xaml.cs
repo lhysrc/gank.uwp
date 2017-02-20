@@ -33,7 +33,11 @@ namespace GankIO.Views
             var deferral = args.GetDeferral();
             SettingsService.Instance.Publisher = who;
 
-            var res = await GankService.PostGank(url, desc, who, type);
+            var res = await GankService.PostGank(url, desc, who, type
+#if DEBUG
+                , debug: true
+#endif
+                );
 
             PostingProgressBar.Visibility = Visibility.Collapsed;            
             if (res.error)
