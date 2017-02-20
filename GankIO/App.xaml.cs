@@ -20,6 +20,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using GankIO.Services;
 using Windows.ApplicationModel.Core;
+using Windows.Security.ExchangeActiveSyncProvisioning;
 
 namespace GankIO
 {
@@ -74,7 +75,7 @@ namespace GankIO
             e.Handled = true;
             ShowExceptionDetailMessageDialog(e.Exception, "Application Unhandled Exception :(");
         }
-        private async void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
+        private void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
             ShowExceptionDetailMessageDialog(e.Exception, "Synchronization Context Unhandled Exception :(");
@@ -100,14 +101,15 @@ namespace GankIO
         {
             //简化异步异常堆栈信息
             var stackTrace = ex.StackTrace == null ? String.Empty : ex.StackTraceEx();
-            var msg = $"可将以下信息发送给开发者：\r\n{ex.Message}\r\n{stackTrace}";
+            var msg = $"{ex.Message}\r\n{stackTrace}";
             
-            var dialog = new MessageDialog(msg, title);
+            var dialog = new MessageDialog("可将以下信息发送给开发者：\r\n\r\n" + msg, title);
             
             dialog.Commands.Add(new UICommand("发送", async cmd =>
             {
                 var appName = Windows.ApplicationModel.Package.Current.DisplayName;
-                var uri = new Uri($"mailto:linhongyuan@outlook.com?subject=“{appName}”错误反馈&body={ title + msg }", UriKind.Absolute);
+                var body = GetEmailBody(title + msg);
+                var uri = new Uri($"mailto:linhongyuan@outlook.com?subject=《{appName}》错误报告&body={body}", UriKind.Absolute);
                 await Windows.System.Launcher.LaunchUriAsync(uri);
             }));
             dialog.Commands.Add(new UICommand("关闭"));
@@ -115,10 +117,25 @@ namespace GankIO
             await dialog.ShowAsync();
         }
 
+        private static string GetEmailBody(string msg)
+        {
+            var deviceInfo = new EasClientDeviceInformation();
 
+            string body = $"错误信息：{msg}  " +
+                          $"（程序版本：{Utils.GetAppVersion()}, ";
 
+            body += $"设备名：{deviceInfo.FriendlyName}, " +
+                    $"操作系统：{deviceInfo.OperatingSystem} {Utils.GetOSVersion()}, " +
+                    $"SKU：{deviceInfo.SystemSku}, " +
+                    $"产品名称：{deviceInfo.SystemProductName}, " +
+                    $"制造商：{deviceInfo.SystemManufacturer}, " +
+                    $"固件版本：{deviceInfo.SystemFirmwareVersion}, " +
+                    $"硬件版本：{deviceInfo.SystemHardwareVersion}）";
 
-
+            body += "\r\n";
+            return body;
+        }
+        
         #endregion
 
 
@@ -249,7 +266,7 @@ namespace GankIO
 
             //await TileAndToast.Show();
 
-            taskBuilder.SetTrigger(new TimeTrigger(240, false));
+            taskBuilder.SetTrigger(new TimeTrigger(120, false));
             taskBuilder.SetTrigger(new SystemTrigger(SystemTriggerType.UserPresent, false));
             taskBuilder.Register();
 

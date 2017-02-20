@@ -26,6 +26,23 @@ namespace GankIO.Common
 
         }
 
+        public static string GetAppVersion()
+        {
+            var v = Windows.ApplicationModel.Package.Current.Id.Version;
+            return $"{v.Major}.{v.Minor}.{v.Build}.{v.Revision}";
+        }
+        public static string GetOSVersion()
+        {
+            string deviceFamilyVersion = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
+            ulong version = ulong.Parse(deviceFamilyVersion);
+            ulong major = (version & 0xFFFF000000000000L) >> 48;
+            ulong minor = (version & 0x0000FFFF00000000L) >> 32;
+            ulong build = (version & 0x00000000FFFF0000L) >> 16;
+            ulong revision = (version & 0x000000000000FFFFL);
+            var osVersion = $"{major}.{minor}.{build}.{revision}";
+            return osVersion;
+        }
+
         public static async Task<string> PostFormData(string url, Dictionary<string, string> formData)
         {
             var content = new FormUrlEncodedContent(formData);
