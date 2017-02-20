@@ -29,6 +29,15 @@ namespace GankIO.UserControls
                 //if (Item == null) return;
                 //IconBox.Children.Add(Resources["AndroidIcon"] as Path);
             };
+
+            Loaded += (s, e) =>
+            {
+                var args = new VisualStateChangedEventArgs
+                {
+                    NewState = AdaptiveVisualStateGroup.CurrentState,
+                };
+                AdaptiveVisualStateGroup_CurrentStateChanged(this, args);
+            };
         }
 
 
