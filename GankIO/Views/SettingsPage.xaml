@@ -90,7 +90,7 @@
                                           RelativePanel.Below="UseLightThemeToggleSwitch"
                                           RelativePanel.RightOf="NeedToNofityToggleSwitch" 
                                           ToolTipService.ToolTip="若磁贴长时不更新，可切换此按钮修复" />
-                            <tkCtrl:HeaderedTextBlock Name="CacheSizeTextBlock"
+                            <tkCtrl:HeaderedTextBlock x:Name="CacheSizeTextBlock"
                                                       Margin="0,5"
                                                       Header="缓存"
                                                       RelativePanel.AlignLeftWithPanel="True"

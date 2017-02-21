@@ -34,7 +34,7 @@
                    Text="{x:Bind Item.desc}"
                    TextWrapping="Wrap"
                    ToolTipService.ToolTip="{Binding Text, ElementName=DescTextBlock}" />
-        <tkCtrl:ImageEx Name="SmallImage" IsCacheEnabled="True"
+        <tkCtrl:ImageEx x:Name="SmallImageControl" IsCacheEnabled="True"
                Grid.RowSpan="2"
                Grid.Column="1"
                MaxWidth="110"

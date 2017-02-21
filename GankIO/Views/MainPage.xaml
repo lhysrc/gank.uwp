@@ -128,7 +128,7 @@
                         <ProgressBar Width="auto" Height="10"
                                      IsIndeterminate="True"
                                      Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <tkCtrls:ImageEx Name="headerImage" IsCacheEnabled="True"
+                        <tkCtrls:ImageEx x:Name="headerImage" IsCacheEnabled="True"
                            Height="480"
                            Source="{x:Bind ViewModel.HeaderImage, Mode=OneWay}"
                            Visibility="{x:Bind ViewModel.HeaderImage, Mode=OneWay,Converter={StaticResource VisibleWhenNotNullConverter}}"

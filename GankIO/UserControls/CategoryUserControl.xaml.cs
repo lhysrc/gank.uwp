@@ -25,7 +25,7 @@ namespace GankIO.UserControls
             DataContextChanged += (s, e) => 
             {
                 Bindings.Update();
-                if (Item?.images != null) FindName(nameof(SmallImage));
+                if (Item?.images != null) FindName(nameof(SmallImageControl));
                 //if (Item == null) return;
                 //IconBox.Children.Add(Resources["AndroidIcon"] as Path);
             };
@@ -62,7 +62,7 @@ namespace GankIO.UserControls
 
         private void AdaptiveVisualStateGroup_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-            if (SmallImage == null)
+            if (SmallImageControl == null)
             {
                 SmallImageColumn.Width = new GridLength(0);
                 return;
