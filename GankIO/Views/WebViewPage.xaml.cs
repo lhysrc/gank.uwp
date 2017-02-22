@@ -27,6 +27,12 @@ namespace GankIO.Views
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
+
+            MainWebView.WebClosed += (s, e) =>
+            {                
+                if (Frame.CanGoBack)
+                    Frame.GoBack();
+            };
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

@@ -233,7 +233,8 @@
             </PivotItem>
         </Pivot>
         <adUI:AdControl xmlns:adUI="using:Microsoft.Advertising.WinRT.UI"
-                        Width="300"
+                        Width="300" ErrorOccurred="AdControl_ErrorOccurred"
+                        AdRefreshed="AdControl_AdRefreshed"
                         Height="250"
                         Margin="10,380,0,0"
                         HorizontalAlignment="Left"

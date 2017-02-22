@@ -10,6 +10,10 @@
     d:DesignWidth="400">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{Binding ActualHeight, ElementName=MainCommandBar}"/>
+        </Grid.RowDefinitions>
         <!--<WebView tkUI:WebViewExtensions.ContentUri="{x:Bind WebViewUri,Mode=OneWay}"-->
         <WebView Name="MainWebView"
                  NavigationStarting="WebView_NavigationStarting"
@@ -24,7 +28,9 @@
                     ClosedDisplayMode="{Binding IsChecked, Converter={StaticResource AppBarDisplayModeConverter}, ElementName=appBarToggleButton}">
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <AppBarButton IsCompact="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}"
+                    <AppBarButton  x:Name="BackButton"
+                        IsCompact="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}"
+                                  
                                   Icon="Back" Label="后退" Click="BackButton_Click"
                                   IsEnabled="{Binding CanGoBack, ElementName=MainWebView}"
                                   ></AppBarButton>

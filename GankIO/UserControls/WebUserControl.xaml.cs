@@ -28,8 +28,13 @@ namespace GankIO.UserControls
         {
             this.InitializeComponent();
             MainWebView.Navigate(defaultUri);
+
+            Loaded += (s, e) =>
+            {
+                MainCommandBar.IsOpen = false;
+            };
         }
-        
+        public event Action<WebUserControl,EventArgs> WebClosed;
         public Uri WebViewUri
         {
             get { return (Uri)GetValue(WebViewUriProperty); }
@@ -43,13 +48,18 @@ namespace GankIO.UserControls
         {
             var webuc = (WebUserControl)d;
             //webuc.MainWebView.NavigateToString("");
-            webuc.MainWebView.Navigate(new Uri(e.NewValue.ToString()));
+            if (e.NewValue.Equals(e.OldValue)) return;
+
+            var url = (Uri)e.NewValue;
+            //webuc.BackButton.IsEnabled = url != defaultUri;
+            webuc.MainWebView.Navigate(url);
         }
 
         public async Task NavigateToDefaultPageAsync()
         {
             WebViewUri = defaultUri;
             //MainWebView.Navigate(defaultUri);
+            
             await WebView.ClearTemporaryWebDataAsync();
         }
 
@@ -80,9 +90,7 @@ namespace GankIO.UserControls
         {
             await NavigateToDefaultPageAsync();
 
-            var page = this.FindAscendant<Page>();
-            if (page != null && page.Frame.CanGoBack)
-                page.Frame.GoBack();
+            WebClosed?.Invoke(this, EventArgs.Empty);
         }
 
         private async void OpenInBrowerButton_Click(object sender, RoutedEventArgs e)

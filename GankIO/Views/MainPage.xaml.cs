@@ -17,6 +17,11 @@ namespace GankIO.Views
         {
             InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+
+            MainWebView.WebClosed += (s, e) =>
+            {
+                _lastSelectedItem = null;
+            };
         }
         private void calendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
         {

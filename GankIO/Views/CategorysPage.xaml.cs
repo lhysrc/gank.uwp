@@ -19,6 +19,10 @@ namespace GankIO.Views
             NavigationCacheMode = NavigationCacheMode.Enabled;
 
             //MainPivot.Items.Remove(AllPivotItem);
+            MainWebView.WebClosed += (s, e) =>
+            {
+                _lastSelectedItem = null;
+            };
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
