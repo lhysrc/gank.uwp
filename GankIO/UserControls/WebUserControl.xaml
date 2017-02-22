@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tkUI="using:Microsoft.Toolkit.Uwp.UI"
+    xmlns:tkHelper="using:Microsoft.Toolkit.Uwp.UI.Helpers"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -12,7 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="{Binding ActualHeight, ElementName=MainCommandBar}"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <!--<WebView tkUI:WebViewExtensions.ContentUri="{x:Bind WebViewUri,Mode=OneWay}"-->
         <WebView Name="MainWebView"
@@ -23,19 +24,30 @@
         <ProgressBar Name="MyProgressRing" Height="10" Width="auto" Foreground="{ThemeResource SystemAccentColor}"
                       IsIndeterminate="True" VerticalAlignment="Top"
                       ></ProgressBar>
-        <CommandBar VerticalAlignment="Bottom" Background="#f02C2C2C"
+        <CommandBar Grid.Row="1"
+            VerticalAlignment="Bottom" Background="#f02C2C2C"
                     Foreground="White" Name="MainCommandBar"
                     ClosedDisplayMode="{Binding IsChecked, Converter={StaticResource AppBarDisplayModeConverter}, ElementName=appBarToggleButton}">
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <AppBarButton  x:Name="BackButton"
-                        IsCompact="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}"
-                                  
+                    <StackPanel.Resources>
+                        <tkHelper:BindableValueHolder x:Name="CommandBarCloseHolder" 
+                                                      Value="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}" />
+                        <!--style 中的绑定在uwp不可用-->
+                        <!--<Style TargetType="AppBarButton">
+                            <Setter Property="IsCompact"
+                                    Value="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}"/>
+                        </Style>-->
+                    </StackPanel.Resources>
+                    <AppBarButton x:Name="BackButton"
+                                  IsCompact="{Binding Value,ElementName=CommandBarCloseHolder}"
                                   Icon="Back" Label="后退" Click="BackButton_Click"
                                   IsEnabled="{Binding CanGoBack, ElementName=MainWebView}"
                                   ></AppBarButton>
-                    <AppBarButton IsCompact="{Binding IsOpen,ElementName=MainCommandBar,Converter={StaticResource FalseWhenTrueConverter}}"
+                    <AppBarButton IsCompact="{Binding Value,ElementName=CommandBarCloseHolder}"
                                   Icon="Cancel" Label="关闭" Click="CloseButton_Click" ></AppBarButton>
+                    <AppBarButton IsCompact="{Binding Value,ElementName=CommandBarCloseHolder}"
+                                  Icon="Refresh" Label="刷新" Click="{x:Bind MainWebView.Refresh}" ></AppBarButton>
                 </StackPanel>
             </CommandBar.Content>
             <CommandBar.PrimaryCommands>
