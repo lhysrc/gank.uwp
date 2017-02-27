@@ -279,7 +279,7 @@ namespace GankIO
 
             //await TileAndToast.Show();
 
-            taskBuilder.SetTrigger(new TimeTrigger(120, false));
+            taskBuilder.SetTrigger(new TimeTrigger(30, false));
             taskBuilder.SetTrigger(new SystemTrigger(SystemTriggerType.UserPresent, false));
             taskBuilder.Register();
 

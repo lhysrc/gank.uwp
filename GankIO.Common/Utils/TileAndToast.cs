@@ -18,23 +18,52 @@ namespace GankIO.Common
         public static async Task Show(bool force = false)
         {
             //两小时以内不重复更新。
-            if (!force && Setting.LastUpdateTime > DateTime.Now.AddHours(-2)) return;
+            if (!force && Setting.LastUpdateTime.AddHours(2) > DateTime.Now) return;
 
             //每日更新内容显示四小时
-            if (Setting.ShowDayResult &&
-                Setting.LastDayResultTime < DateTime.Now.AddHours(-4))
+            if (!force && Setting.LastDayResultTime.AddHours(4) > DateTime.Now) return;
+
+            if (Setting.ShowDayResult)
             {
                 var res = await GankService.GetDayResult(DateTime.Today, false);
                 if (res.all.Any())
                 {
+                    UpdateBadgeGlyph(res.all.Count().ToString());
                     UpdateTileAndShowToastByResults(res);
                     return;
-                }                       
+                }
             }
+            clearBadge();                     
             await UpdateTileByPhotos();
+        }
+        private static void UpdateBadgeGlyph(string badgeGlyphValue)
+        {
+            //https://docs.microsoft.com/en-us/windows/uwp/controls-and-patterns/tiles-and-notifications-badges
 
-            Setting.LastUpdateTime = DateTime.Now;
+            if (badgeGlyphValue.IsNullOrWhiteSpace()) badgeGlyphValue = "alert";
 
+            // Get the blank badge XML payload for a badge glyph
+            XmlDocument badgeXml =
+                BadgeUpdateManager.GetTemplateContent(BadgeTemplateType.BadgeGlyph);
+
+            // Set the value of the badge in the XML to our glyph value
+            XmlElement badgeElement =
+                badgeXml.SelectSingleNode("/badge") as XmlElement;
+            badgeElement.SetAttribute("value", badgeGlyphValue);
+
+            // Create the badge notification
+            BadgeNotification badge = new BadgeNotification(badgeXml);
+
+            // Create the badge updater for the application
+            BadgeUpdater badgeUpdater =
+                BadgeUpdateManager.CreateBadgeUpdaterForApplication();
+
+            // And update the badge
+            badgeUpdater.Update(badge);
+        }
+        private static void clearBadge()
+        {
+            BadgeUpdateManager.CreateBadgeUpdaterForApplication().Clear();
         }
         public static async Task UpdateTileByPhotos(IEnumerable<福利> fulis = null)
         {
@@ -49,6 +78,7 @@ namespace GankIO.Common
                     var doc = loadXml(xml);
                     updater.Update(new TileNotification(doc));
                 }
+                Setting.LastUpdateTime = DateTime.Now;
             }
             catch (Exception e)
             {
@@ -58,35 +88,30 @@ namespace GankIO.Common
 
         public static void UpdateTileAndShowToastByResults(Models.DayResult res)
         {
-            var items = res.all.Shuffle();
-
+            var items = res.all.Where(i => !(i is 福利)).Shuffle();
+            var fuli = res.福利.FirstOrDefault();
             try
             {
                 if (Setting.NeedToNofity &&
                     Setting.LastDayResultTime < DateTime.Today)
                 {
                     //每日只通知一次
-                    ShowToast(res.福利.FirstOrDefault());
-                }                
+                    ShowToast(fuli);
+                    Setting.LastDayResultTime = DateTime.Now;
+                }
 
                 var updater = getTileUpdater();
+
                 foreach (var n in items.Take(5))
                 {
-                    string xml;
-                    if (n is 福利)
-                    {
-                        xml = getFuliTileXML((福利)n);
-                    }
-                    else
-                    {
-                        var item2 = items.Skip(5).Where(i => !(i is 福利)).Sample(1).FirstOrDefault();
-                        xml = getItemXML(n, item2);
-                    }
+                    var item2 = items.Where(p => p.type != n.type).Sample(1).FirstOrDefault();
+                    var xml = getItemXML(n, item2, fuli);
+                    
                     var doc = loadXml(xml);
                     updater.Update(new TileNotification(doc));
                 }
 
-                Setting.LastDayResultTime = DateTime.Now;
+                Setting.LastUpdateTime = DateTime.Now;
             }
             catch (Exception e)
             {
@@ -145,142 +170,192 @@ namespace GankIO.Common
 
         private static string getFuliTileXML(福利 f)
         {
-
             return $@"<tile>
-  <visual branding='none'>
+  <visual branding='nameAndLogo' displayName='福利'>
     <binding template='TileSmall'>
-      <image placement='peek' src='{f.url}' />
-      <text hint-style='captionSubtle' ></text>
-      <text hint-style='caption' >{f.publishedAt:MM-dd}</text>
+      <image placement='background' src='{f.url}' />
     </binding>
-
-    <binding template='TileMedium'>
-      <image placement = 'peek' src='{f.url}' />
-      <text hint-style='captionSubtle' >福利</text>
-
-      <text hint-style='caption' hint-wrap='true'>{f.desc}</text>
-      <text hint-style='captionSubtle' hint-align='right'>{f.who}</text>
-      <text hint-style='captionSubtle' hint-align='right'>{f.publishedAt:yyyy-MM-dd}</text>
+    <binding template='TileMedium' >
+      <image placement='background' src='{f.url}' />      
     </binding>
-
     <binding template='TileWide'>
-      <image placement = 'background' src='{f.url}' />
+      <image placement='background' src='{f.url}' />
     </binding>
-
     <binding template='TileLarge'>
-      <image alt ='{f.desc}' placement ='background'  src='{f.url}'/>
+      <image placement='background' src='{f.url}'/>
     </binding>
-
   </visual>
 </tile>";
+
+
+//            return $@"<tile>
+//  <visual branding='none'>
+//    <binding template='TileSmall'>
+//      <image placement='peek' src='{f.url}' />
+//      <text hint-style='captionSubtle' ></text>
+//      <text hint-style='caption' >{f.publishedAt:MM-dd}</text>
+//    </binding>
+//    <binding template='TileMedium'>
+//      <image placement = 'peek' src='{f.url}' />
+//      <text hint-style='captionSubtle' >福利</text>
+//      <text hint-style='caption' hint-wrap='true'>{f.desc}</text>
+//      <text hint-style='captionSubtle' hint-align='right'>{f.who}</text>
+//      <text hint-style='captionSubtle' hint-align='right'>{f.publishedAt:yyyy-MM-dd}</text>
+//    </binding>
+//    <binding template='TileWide'>
+//      <image placement = 'background' src='{f.url}' />
+//    </binding>
+//    <binding template='TileLarge'>
+//      <image alt ='{f.desc}' placement ='background'  src='{f.url}'/>
+//    </binding>
+//  </visual>
+//</tile>";
         }
 
 
-        private static string getItemXML(all item, all item2)
+        private static string getItemXML(all item, all item2, 福利 f)
         {
-            //if (item.images == null || item.images.Length == 0)
-            {
-
-                return $@"<tile>
-  <visual branding='name'>
-    <binding template='TileSmall' branding='none'>
-      <text hint-style='caption' ></text>
-      <text hint-style='caption' >{item.publishedAt:MMdd}</text>
+            return $@"<tile>
+  <visual branding='name' displayName='干货'>
+    <binding template='TileSmall' hint-textStacking='center'>
+      <text hint-style='body' hint-align='center'>{item.publishedAt:MMdd}</text>
     </binding>
-
     <binding template='TileMedium'>
+      <image placement='background' src='{f.url}' />
       <text hint-style='captionSubtle'>{item.type}</text>
       <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
       <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.publishedAt:yyyy-MM-dd}</text>
     </binding>
-
     <binding template='TileWide'>
+      <image placement='background' src='{f.url}' />
       <text hint-style='captionSubtle'>{item.type}</text>
       <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
-      <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.who} @ {item.publishedAt:yyyy-MM-dd}</text>
+      <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.who}{(item.who==null?"":"@")}{item.publishedAt:yyyy-MM-dd}</text>
     </binding>
-
     <binding template='TileLarge'>
+      <image placement='background' src='{f.url}' />
       <group>
         <subgroup>
-          <text hint-style='titleSubtle'>{item.type}</text>
+          <text hint-style='subtitleSubtle'>{item.type}</text>
           <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item.desc}</text>
+          {(item.desc.Length<30? "<text hint-style='caption'></text>" : "")}
         </subgroup>
       </group>
       <group>
         <subgroup>
-          <text hint-style='captionSubtle'>{item2?.type}</text>
+          <text hint-style='subtitleSubtle'>{item2?.type}</text>
           <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item2?.desc}</text>
           <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.publishedAt:yyyy-MM-dd}</text>
         </subgroup>
       </group>
     </binding>
-
-  </visual>
-</tile>
-";
-            }
-            //else  //有网络图片经常会显示异常。
-            {
-                var bakImg = item.images.Length > 1 ? item.images[1] : item.images[0];
-                return $@"
-<tile>
-  <visual branding='nameAndLogo'>
-    <binding template='TileSmall'>
-      <text hint-style='caption' >{item.publishedAt:MMdd}</text>
-    </binding>
-
-    <binding template='TileMedium'>
-      <image src='{item.images[0]}'  placement='peek'/>
-      <text hint-style='captionSubtle'>{item.type}</text>
-      <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
-      <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.publishedAt:yyyy-MM-dd}</text>
-    </binding>
-
-    <binding template='TileWide'>
-      <group>
-        <subgroup hint-weight='33' hint-textStacking='center'>
-          <image src='{item.images[0]}'  hint-align='center' />
-        </subgroup>
-        <subgroup>
-          <text hint-style='captionSubtle'>{item.type}</text>
-          <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
-          <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.who} @ {item.publishedAt:yyyy-MM-dd}</text>
-        </subgroup>
-      </group>
-    </binding>
-
-    <binding template='TileLarge'>
-      <group>
-        <subgroup hint-weight='33' hint-textStacking='center'>
-          <image src='{item.images[0]}'  hint-align='center' />
-        </subgroup>
-        <subgroup>
-          <text hint-style='titleSubtle'>{item.type}</text>
-          <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item.desc}</text>
-        </subgroup>
-
-      </group>
-      <group>
-        <subgroup hint-weight='33' hint-textStacking='center'>
-          <image src='{item2?.images?[0]}'  hint-align='center'/>
-        </subgroup>
-        <subgroup>
-          <text hint-style='captionSubtle'>Android</text>
-          <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item2?.desc}</text>
-        </subgroup>
-      </group>
-      <group>
-        <subgroup>
-          <text hint-style='captionSubtle' hint-maxLines='1' hint-align='right'>{item.publishedAt:yyyy-MM-dd}</text>
-        </subgroup>
-      </group>
-      <image src='{bakImg}'  placement='peek' />
-    </binding>
-
   </visual>
 </tile>";
-            };
+
+
+
+            #region old
+
+            //if (item.images == null || item.images.Length == 0)
+            //{
+
+            //                return $@"<tile>
+            //  <visual branding='name'>
+            //    <binding template='TileSmall' branding='none'>
+            //      <text hint-style='caption' ></text>
+            //      <text hint-style='caption' >{item.publishedAt:MMdd}</text>
+            //    </binding>
+
+            //    <binding template='TileMedium'>
+            //      <text hint-style='captionSubtle'>{item.type}</text>
+            //      <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
+            //      <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.publishedAt:yyyy-MM-dd}</text>
+            //    </binding>
+
+            //    <binding template='TileWide'>
+            //      <text hint-style='captionSubtle'>{item.type}</text>
+            //      <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
+            //      <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.who} @ {item.publishedAt:yyyy-MM-dd}</text>
+            //    </binding>
+
+            //    <binding template='TileLarge'>
+            //      <group>
+            //        <subgroup>
+            //          <text hint-style='titleSubtle'>{item.type}</text>
+            //          <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item.desc}</text>
+            //        </subgroup>
+            //      </group>
+            //      <group>
+            //        <subgroup>
+            //          <text hint-style='captionSubtle'>{item2?.type}</text>
+            //          <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item2?.desc}</text>
+            //          <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.publishedAt:yyyy-MM-dd}</text>
+            //        </subgroup>
+            //      </group>
+            //    </binding>
+
+            //  </visual>
+            //</tile>
+            //";
+            //}
+            //else  //有网络图片经常会显示异常。
+            //            {
+            //                var bakImg = item.images.Length > 1 ? item.images[1] : item.images[0];
+            //                return $@"
+            //<tile>
+            //  <visual branding='nameAndLogo'>
+            //    <binding template='TileSmall'>
+            //      <text hint-style='caption' >{item.publishedAt:MMdd}</text>
+            //    </binding>
+            //    <binding template='TileMedium'>
+            //      <image src='{item.images[0]}'  placement='peek'/>
+            //      <text hint-style='captionSubtle'>{item.type}</text>
+            //      <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
+            //      <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.publishedAt:yyyy-MM-dd}</text>
+            //    </binding>
+            //    <binding template='TileWide'>
+            //      <group>
+            //        <subgroup hint-weight='33' hint-textStacking='center'>
+            //          <image src='{item.images[0]}'  hint-align='center' />
+            //        </subgroup>
+            //        <subgroup>
+            //          <text hint-style='captionSubtle'>{item.type}</text>
+            //          <text hint-style='caption' hint-wrap='true' hint-maxLines='2'>{item.desc}</text>
+            //          <text hint-style='captionSubtle' hint-align='right' hint-maxLines='1'>{item.who} @ {item.publishedAt:yyyy-MM-dd}</text>
+            //        </subgroup>
+            //      </group>
+            //    </binding>
+            //    <binding template='TileLarge'>
+            //      <group>
+            //        <subgroup hint-weight='33' hint-textStacking='center'>
+            //          <image src='{item.images[0]}'  hint-align='center' />
+            //        </subgroup>
+            //        <subgroup>
+            //          <text hint-style='titleSubtle'>{item.type}</text>
+            //          <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item.desc}</text>
+            //        </subgroup>
+            //      </group>
+            //      <group>
+            //        <subgroup hint-weight='33' hint-textStacking='center'>
+            //          <image src='{item2?.images?[0]}'  hint-align='center'/>
+            //        </subgroup>
+            //        <subgroup>
+            //          <text hint-style='captionSubtle'>Android</text>
+            //          <text hint-style='caption' hint-wrap='true' hint-maxLines='3'>{item2?.desc}</text>
+            //        </subgroup>
+            //      </group>
+            //      <group>
+            //        <subgroup>
+            //          <text hint-style='captionSubtle' hint-maxLines='1' hint-align='right'>{item.publishedAt:yyyy-MM-dd}</text>
+            //        </subgroup>
+            //      </group>
+            //      <image src='{bakImg}'  placement='peek' />
+            //    </binding>
+            //  </visual>
+            //</tile>";
+            //            };
+            #endregion
+
         }
 
 
