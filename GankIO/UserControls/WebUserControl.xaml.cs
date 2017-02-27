@@ -33,6 +33,11 @@ namespace GankIO.UserControls
             {
                 MainCommandBar.IsOpen = false;
             };
+
+            Unloaded += (s, e) =>
+            {
+                WebViewUri = defaultUri;
+            };
         }
         public event Action<WebUserControl,EventArgs> WebClosed;
         public Uri WebViewUri
