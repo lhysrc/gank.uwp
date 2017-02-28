@@ -17,13 +17,17 @@ namespace GankIO.Common
         public static TileSetting Setting = SettingsService.Instance.TileSetting;
         public static async Task Show(bool force = false)
         {
-            //两小时以内不重复更新。
-            if (!force && Setting.LastUpdateTime.AddHours(2) > DateTime.Now) return;
+            if (!force)
+            {
+                //两小时以内不重复更新。
+                if (Setting.LastUpdateTime.AddHours(2) > DateTime.Now) return;
 
-            //每日更新内容显示四小时
-            if (!force && Setting.LastDayResultTime.AddHours(4) > DateTime.Now) return;
+                //每日更新内容显示四小时
+                if (Setting.LastDayResultTime.AddHours(4) > DateTime.Now) return;
+            }
+            
 
-            if (Setting.ShowDayResult)
+            if (Setting.ShowDayResult && Setting.LastDayResultTime < DateTime.Today)
             {
                 var res = await GankService.GetDayResult(DateTime.Today, false);
                 if (res.all.Any())
