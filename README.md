@@ -70,9 +70,7 @@
 
   多种尺寸的磁贴显示。
 
-  ![tile1](imgs/tile1.jpg) 
-
-  ![tile3](imgs/tile3.jpg) ![tile2](imgs/tile2.jpg) ![tile5](imgs/tile5.jpg) ![tile6](imgs/tile6.jpg) 
+  ![tile0](imgs/tile0.jpg)  ![tile1](imgs/tile1.jpg) 
 
 - 小娜
 
