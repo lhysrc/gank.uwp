@@ -2,7 +2,7 @@
 <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.1">
 
   <CommandSet xml:lang="zh-CN" Name="ExampleAppCommandSet_zh-CN">
-    <CommandPrefix> [在]干货[里] </CommandPrefix>
+    <CommandPrefix> 在干货里 </CommandPrefix>
     <Example> 来些福利 </Example>
 
     <Command Name="fuli">

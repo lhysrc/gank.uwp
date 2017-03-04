@@ -4,10 +4,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:vm="using:GankIO.ViewModels"
       xmlns:local="using:GankIO.Views"
       xmlns:uc="using:GankIO.UserControls"
       xmlns:tkUI="using:Microsoft.Toolkit.Uwp.UI"
+      xmlns:tkCtrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
       xmlns:controls="using:Template10.Controls"
       mc:Ignorable="d">
     <Page.Resources />
@@ -60,9 +63,7 @@
             <Pivot Name="MainPivot" Grid.Row="1" Width="auto" SelectionChanged="MainPivot_SelectionChanged">
                 <Pivot.Resources>
                     <DataTemplate x:Key="PivotItemListView">
-                        <ListView AllowDrop="True"
-                                  CanDragItems="True"
-                                  CanReorderItems="True"
+                        <ListView 
                                   IsItemClickEnabled="True"
                                   ItemClick="MasterListView_ItemClick"
                                   ItemTemplateSelector="{StaticResource MyDataTemplateSelector}"
@@ -203,48 +204,23 @@
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch">
             </uc:WebUserControl>
-            <!--<ContentPresenter x:Name="DetailContentPresenter"
-                              Grid.RowSpan="2"
-                              Grid.Column="1"
-                              Padding="24,0"
-                              BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                              BorderThickness="1,0,0,0"
-                             >
-                <ContentPresenter.Content>
 
-                        <WebView Name="MainWebView"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch" />
 
-                </ContentPresenter.Content>
-                <ContentPresenter.ContentTransitions>
-            -->
-            <!--  Empty by default. See MasterListView_ItemClick  -->
-            <!--
-                    <TransitionCollection />
-                </ContentPresenter.ContentTransitions>
-            </ContentPresenter>-->
-            <!--<VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
-                    <VisualState x:Name="DefaultState">
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger MinWindowWidth="720" />
-                        </VisualState.StateTriggers>
-                    </VisualState>
-
-                    <VisualState x:Name="NarrowState">
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger MinWindowWidth="0" />
-                        </VisualState.StateTriggers>
-
-                        <VisualState.Setters>
-                            <Setter Target="MasterColumn.Width" Value="*" />
-                            <Setter Target="DetailColumn.Width" Value="0" />
-                            <Setter Target="MasterListView.SelectionMode" Value="None" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>-->
+            <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" x:Name="FuliGrid" Visibility="Collapsed"
+                  Tapped="FuliGrid_Tapped"
+                  >
+                <Border Name="flipViewBackground" Background="#A0000000">
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:Blur x:Name="BlurBehavior"
+                                                    AutomaticallyStart="True"
+                                                    Value="5" />
+                    </interactivity:Interaction.Behaviors>
+                </Border>
+                <tkCtrl:ImageEx x:Name="FuliImage" HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsCacheEnabled="True"
+                                            Stretch="Uniform" />
+            </Grid>
         </Grid>
 
         <VisualStateManager.VisualStateGroups>

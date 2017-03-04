@@ -176,8 +176,12 @@
                 </GridView.ItemTemplate>
 
             </GridView>
-
-            <FlipView Name="imageFlipView"
+            <Grid x:Name="FlipGrid" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <FlipView Name="imageFlipView"
                       ItemsSource="{x:Bind ViewModel.Fulis, Mode=OneWay}"
                       RelativePanel.AlignBottomWithPanel="True"
                       RelativePanel.AlignLeftWithPanel="True"
@@ -185,60 +189,61 @@
                       RelativePanel.AlignTopWithPanel="True"
                       SelectedIndex="{Binding SelectedIndex, ElementName=ItemsGridView, Mode=TwoWay}"
                       Tapped="FlipView_Tapped"
-                      Visibility="Collapsed">
+                      >
 
-                <FlipView.ItemTemplate>
-                    <DataTemplate x:DataType="data:福利">
-                        <Grid>
-                            <Border Name="flipViewBackground" Background="#A0000000">
-                                <interactivity:Interaction.Behaviors>
-                                    <behaviors:Blur x:Name="BlurBehavior"
+                    <FlipView.ItemTemplate>
+                        <DataTemplate x:DataType="data:福利">
+                            <Grid>
+                                <Border Name="flipViewBackground" Background="#A0000000">
+                                    <interactivity:Interaction.Behaviors>
+                                        <behaviors:Blur x:Name="BlurBehavior"
                                                     AutomaticallyStart="True"
                                                     Value="5" />
-                                </interactivity:Interaction.Behaviors>
-                            </Border>
-                            <!--<ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                    </interactivity:Interaction.Behaviors>
+                                </Border>
+                                <!--<ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           MinZoomFactor="1"
                                           VerticalScrollBarVisibility="Auto"
                                           ZoomMode="Enabled">
                                 <Image Source="{x:Bind url}"
                                        Stretch="Uniform" />
                             </ScrollViewer>-->
-                            <tkCtrl:ImageEx HorizontalAlignment="Center"
+                                <tkCtrl:ImageEx HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             IsCacheEnabled="True"
                                             Source="{x:Bind url}"
                                             Stretch="Uniform" />
-                        </Grid>
-                    </DataTemplate>
-                </FlipView.ItemTemplate>
-            </FlipView>
-            <CommandBar Name="MainCommandBar"
+                            </Grid>
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
+                <CommandBar Name="MainCommandBar" Grid.Row="1"
                         VerticalAlignment="Bottom"
                         Background="#f02C2C2C"
                         ClosedDisplayMode="{Binding IsChecked, Converter={StaticResource AppBarDisplayModeConverter}, ElementName=appBarToggleButton}"
                         Foreground="White"
                         RelativePanel.AlignBottomWithPanel="True"
                         RelativePanel.AlignLeftWithPanel="True"
-                        RelativePanel.AlignRightWithPanel="True"
-                        Visibility="{Binding Visibility, ElementName=imageFlipView}">
+                        RelativePanel.AlignRightWithPanel="True">
 
-                <CommandBar.PrimaryCommands>
-                    <AppBarButton Click="SaveButton_Click"
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton Click="SaveButton_Click"
                                   Icon="Save"
                                   Label="保存到相册" />
-                    <AppBarButton Click="PinButton_Click"
+                        <AppBarButton Click="PinButton_Click"
                                   Icon="Pin"
                                   Label="显示到磁贴" />
-                </CommandBar.PrimaryCommands>
-                <CommandBar.SecondaryCommands>
-                    <AppBarToggleButton x:Name="appBarToggleButton" Label="固定" />
-                    <!--<AppBarSeparator />
+                    </CommandBar.PrimaryCommands>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarToggleButton x:Name="appBarToggleButton" Label="固定" />
+                        <!--<AppBarSeparator />
                     <AppBarButton Click="CopyButton_Click" Label="复制链接" />-->
-                </CommandBar.SecondaryCommands>
+                    </CommandBar.SecondaryCommands>
 
 
-            </CommandBar>
+                </CommandBar>
+            </Grid>
+            
         </RelativePanel>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="AdaptiveVisualStateGroup">

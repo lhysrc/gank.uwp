@@ -6,6 +6,7 @@ using System;
 using Windows.UI.Xaml.Media.Animation;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 
 namespace GankIO.Views
 {
@@ -47,9 +48,24 @@ namespace GankIO.Views
                 list.SelectedItem = _lastSelectedItem;
         }
 
-        private void MasterListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void MasterListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var clickedItem = (all)e.ClickedItem;
+
+            if (clickedItem.type == nameof(福利))
+            {
+                FuliImage.Source = clickedItem.url;
+                FuliGrid.Visibility = Visibility.Visible;
+                await FuliGrid.Fade(1).StartAsync();
+
+                _lastSelectedItem = null;
+                return;
+            }
+
+
+
+
+
             _lastSelectedItem = clickedItem;
 
             if (AdaptiveVisualStateGroup.CurrentState == VisualStateNarrow)
@@ -105,6 +121,12 @@ namespace GankIO.Views
             ((MainPivot.SelectedItem as PivotItem)
                 ?.DataContext as IRefresh)
                 ?.Refresh();
+        }
+
+        private async void FuliGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await FuliGrid.Fade(0).StartAsync();
+            FuliGrid.Visibility = Visibility.Collapsed;
         }
 
         //private object tmpItem = null;

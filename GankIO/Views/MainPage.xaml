@@ -102,11 +102,11 @@
                 <ColumnDefinition x:Name="DetailColumn" Width="*" />
             </Grid.ColumnDefinitions>
 
+                      <!--AllowDrop="True"
+                      CanDragItems="True"
+                      CanReorderItems="True"-->
             <ListView x:Name="MasterListView"
                       Grid.Row="1"
-                      AllowDrop="True"
-                      CanDragItems="True"
-                      CanReorderItems="True"
                       IsItemClickEnabled="True"
                       ItemClick="MasterListView_ItemClick"
                       ItemTemplateSelector="{StaticResource MyDataTemplateSelector}"

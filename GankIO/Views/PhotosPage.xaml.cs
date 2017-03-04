@@ -120,15 +120,15 @@ namespace GankIO.Views
 
         private async void hideFlipView()
         {
-            await imageFlipView.Fade(0).StartAsync();
-            imageFlipView.Visibility = Visibility.Collapsed;
+            await FlipGrid.Fade(0).StartAsync();
+            FlipGrid.Visibility = Visibility.Collapsed;
         }
 
         private async void ItemsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             //fadeInStoryboard.Begin();            
-            imageFlipView.Visibility = Visibility.Visible;
-            await imageFlipView.Fade(1).StartAsync();
+            FlipGrid.Visibility = Visibility.Visible;
+            await FlipGrid.Fade(1).StartAsync();
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
