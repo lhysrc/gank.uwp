@@ -137,11 +137,11 @@ namespace GankIO.Views
             //var item = imageFlipView.ContainerFromItem(imageFlipView.SelectedItem) as FlipViewItem;
             //var img = item.FindDescendant<Microsoft.Toolkit.Uwp.UI.Controls.ImageEx>();
 
-            var btn = (AppBarButton)sender;
-            if (((SymbolIcon)btn.Icon).Symbol != Symbol.Save) return;
-            var srcIcon = btn.Icon;
-            var srcBool = appBarToggleButton.IsChecked;
-            appBarToggleButton.IsChecked = true;
+            //var btn = (AppBarButton)sender;
+            //if (((SymbolIcon)btn.Icon).Symbol != Symbol.Save) return;
+            //var srcIcon = btn.Icon;
+            //var srcBool = appBarToggleButton.IsChecked;
+            //appBarToggleButton.IsChecked = true;
 
 
             var f = (imageFlipView.SelectedItem as 福利);
@@ -154,13 +154,16 @@ namespace GankIO.Views
 
             try
             {
-                await img.SaveToFileAsync(file);                
-                btn.Icon = new SymbolIcon(Symbol.Accept);                
+                await img.SaveToFileAsync(file); 
+                               
+                //btn.Icon = new SymbolIcon(Symbol.Accept);               
                 
-                await Task.Delay(1500);
+                //await Task.Delay(1500);
 
-                btn.Icon = srcIcon;
-                appBarToggleButton.IsChecked = srcBool;
+                //btn.Icon = srcIcon;
+                //appBarToggleButton.IsChecked = srcBool;
+
+                Message.Show("保存成功");
             }
             catch (Exception ex)
             {

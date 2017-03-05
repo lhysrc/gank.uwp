@@ -8,9 +8,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace GankIO.Views
 {
-    public sealed partial class Busy : UserControl
+    public sealed partial class Message : UserControl
     {
-        public Busy()
+        public Message()
         {
             InitializeComponent();
         }
@@ -21,7 +21,7 @@ namespace GankIO.Views
             set { SetValue(BusyTextProperty, value); }
         }
         public static readonly DependencyProperty BusyTextProperty =
-            DependencyProperty.Register(nameof(BusyText), typeof(string), typeof(Busy), new PropertyMetadata("Please wait..."));
+            DependencyProperty.Register(nameof(BusyText), typeof(string), typeof(Message), new PropertyMetadata("Please wait..."));
 
         public bool IsBusy
         {
@@ -29,7 +29,7 @@ namespace GankIO.Views
             set { SetValue(IsBusyProperty, value); }
         }
         public static readonly DependencyProperty IsBusyProperty =
-            DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(Busy), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(Message), new PropertyMetadata(false));
 
         // hide and show busy dialog
         public static void SetBusy(bool busy, string text = null)
@@ -37,11 +37,22 @@ namespace GankIO.Views
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
                 var modal = Window.Current.Content as ModalDialog;
-                var view = modal.ModalContent as Busy;
+                var view = modal.ModalContent as Message;
                 if (view == null)
-                    modal.ModalContent = view = new Busy();
+                    modal.ModalContent = view = new Message();
                 modal.IsModal = view.IsBusy = busy;
                 view.BusyText = text;
+            });
+        }
+
+        public static void Show(string text,double delay = 1)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                var modal = Window.Current.Content as ModalDialog;
+                var shell = modal.Content as Shell;
+                
+                shell.ShowMessage(text, delay);
             });
         }
     }

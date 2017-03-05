@@ -115,8 +115,8 @@
     <Compile Include="ViewModels\CategorysPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
-    <Compile Include="Views\Busy.xaml.cs">
-      <DependentUpon>Busy.xaml</DependentUpon>
+    <Compile Include="Views\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CategorysPage.xaml.cs">
       <DependentUpon>CategorysPage.xaml</DependentUpon>
@@ -245,7 +245,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Busy.xaml">
+    <Page Include="Views\Message.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -111,7 +111,7 @@
     <Compile Include="Utils\ExceptionHandlingSynchronizationContext.cs" />
     <Compile Include="Utils\Exts.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Class3.cs" />
+    <Compile Include="Models\Results.cs" />
     <Compile Include="Models\ContentResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\GankService.cs" />

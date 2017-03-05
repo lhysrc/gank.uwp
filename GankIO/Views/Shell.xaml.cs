@@ -8,6 +8,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Template10.Mvvm;
+using System.Threading.Tasks;
 
 namespace GankIO.Views
 {
@@ -43,5 +44,13 @@ namespace GankIO.Views
         //    hb.nav
         //    await Windows.System.Launcher.LaunchUriAsync(new Uri("http://gank.io"));
         //}
+
+        public async void ShowMessage(string msg, double seconds)
+        {
+            MessageBlock.Text = msg;
+            MessageBorder.Visibility = Visibility.Visible;
+            await Task.Delay(TimeSpan.FromSeconds(seconds));
+            MessageBorder.Visibility = Visibility.Collapsed;
+        }
     }
 }
