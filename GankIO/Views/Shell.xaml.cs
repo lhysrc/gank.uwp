@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Template10.Mvvm;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 
 namespace GankIO.Views
 {
@@ -49,7 +50,8 @@ namespace GankIO.Views
         {
             MessageBlock.Text = msg;
             MessageBorder.Visibility = Visibility.Visible;
-            await Task.Delay(TimeSpan.FromSeconds(seconds));
+            await MessageBorder.Fade(1).StartAsync();
+            await MessageBorder.Fade(delay: seconds * 1e3).StartAsync();
             MessageBorder.Visibility = Visibility.Collapsed;
         }
     }

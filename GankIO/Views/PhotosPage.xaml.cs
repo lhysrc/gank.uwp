@@ -177,7 +177,10 @@ namespace GankIO.Views
         {
             var f = (imageFlipView.SelectedItem as 福利);
             if (f != null)
+            {
                 await TileAndToast.UpdateTileByPhotos(new[] { f });
+                Message.Show("已发送到磁贴",0.5);
+            }
         }
 
         private void ImageEx_ImageExOpened(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageExOpenedEventArgs e)
