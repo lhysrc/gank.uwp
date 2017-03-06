@@ -94,7 +94,7 @@ namespace GankIO.ViewModels
         private string _ErrorMsg;
         public string ErrorMsg { get { return _ErrorMsg; } set { Set(ref _ErrorMsg, value); } }
 
-        public bool? _isRandom = false;
+        public bool? _isRandom;
         public bool? IsRandom
         {
             get
@@ -152,15 +152,14 @@ namespace GankIO.ViewModels
 
             //var res = await GankService.GetFuliResult(10, 1);
             //res.results.ForEach(Fulis.Add);
+
+
+            if (!IsRandom.HasValue)
+            {
+                IsRandom = (parameter is Boolean) ? (bool)parameter : false;
+            }
+           
             
-            if(parameter is Boolean)
-            {
-                IsRandom = (bool)parameter;
-            }
-            else
-            {
-                setData(false);
-            }
             
 
             await Task.CompletedTask;

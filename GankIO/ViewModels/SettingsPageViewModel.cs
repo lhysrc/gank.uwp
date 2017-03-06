@@ -19,10 +19,12 @@ namespace GankIO.ViewModels
         public SettingsPartViewModel SettingsPartViewModel { get; } = new SettingsPartViewModel();
         public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
 
-        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            SettingsPartViewModel.ReloadCacheSize();
-            return base.OnNavigatedToAsync(parameter, mode, state);
+            await SettingsPartViewModel.ReloadCacheSize();
+            
+
+            await Task.CompletedTask;
         }
     }
 
@@ -160,20 +162,24 @@ namespace GankIO.ViewModels
 
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.LocalCache);
                 await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
-                ReloadCacheSize();
+                await ReloadCacheSize();
 
                 IsLoading = false;
             }, () => CacheSize > 0));
 
-        internal long ReloadCacheSize()
+        internal async Task<long> ReloadCacheSize()
         {
             IsLoading = true;
             //读取缓存大小
-            var cachePath = ApplicationData.Current.LocalCacheFolder.Path;
-            var cacheSize = Utils.DirectorySize(new DirectoryInfo(cachePath));
-            var tempPath = ApplicationData.Current.TemporaryFolder.Path;
-            var tempSize = Utils.DirectorySize(new DirectoryInfo(tempPath));
-            CacheSize = cacheSize + tempSize;
+            await Task.Run(() =>
+            {
+                var cachePath = ApplicationData.Current.LocalCacheFolder.Path;
+                var cacheSize = Utils.DirectorySize(new DirectoryInfo(cachePath));
+                var tempPath = ApplicationData.Current.TemporaryFolder.Path;
+                var tempSize = Utils.DirectorySize(new DirectoryInfo(tempPath));
+                CacheSize = cacheSize + tempSize;
+            });           
+
             ClearCacheCommand.RaiseCanExecuteChanged();
 
             IsLoading = false;
