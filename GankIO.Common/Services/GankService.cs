@@ -130,11 +130,4 @@ namespace GankIO.Services
         }
 
     }
-
-    public class HistoryDates
-    {
-        public bool error { get; set; }
-        public DateTime[] results { get; set; }
-    }
-
 }

@@ -10,6 +10,11 @@ using Windows.UI.Xaml.Data;
 namespace GankIO.Models
 {
 
+    public class HistoryDates
+    {
+        public bool error { get; set; }
+        public DateTime[] results { get; set; }
+    }
     public class PostResult
     {
         public bool error { get; set; }
@@ -28,33 +33,33 @@ namespace GankIO.Models
     }
 
 
-    public class VariableSizedStyleSelector : StyleSelector
-    {
-        public Style NormalStyle
-        {
-            get; set;
-        }
-        public Style DoubleWidthStyle { get; set; }
+    //public class VariableSizedStyleSelector : StyleSelector
+    //{
+    //    public Style NormalStyle
+    //    {
+    //        get; set;
+    //    }
+    //    public Style DoubleWidthStyle { get; set; }
 
-        protected override Style SelectStyleCore(object item, DependencyObject container)
-        {
-            if (this.NormalStyle == null || this.DoubleWidthStyle == null)
-                return base.SelectStyleCore(item, container);
+    //    protected override Style SelectStyleCore(object item, DependencyObject container)
+    //    {
+    //        if (this.NormalStyle == null || this.DoubleWidthStyle == null)
+    //            return base.SelectStyleCore(item, container);
 
-            if (item is 福利)
-            {
-                if (((福利)item).publishedAt.Date == DateTime.Now.Date)
+    //        if (item is 福利)
+    //        {
+    //            if (((福利)item).publishedAt.Date == DateTime.Now.Date)
 
-                    return DoubleWidthStyle;
-                else
-                    return NormalStyle;
+    //                return DoubleWidthStyle;
+    //            else
+    //                return NormalStyle;
 
-            }
+    //        }
 
 
-            return base.SelectStyleCore(item, container);
-        }
-    }
+    //        return base.SelectStyleCore(item, container);
+    //    }
+    //}
     //public class DateToSpanConverter : IValueConverter
     //{
     //    public object Convert(object value, Type targetType, object parameter, string language)
