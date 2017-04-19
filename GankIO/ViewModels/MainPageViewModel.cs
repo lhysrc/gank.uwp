@@ -118,6 +118,8 @@ namespace GankIO.ViewModels
                 }
                 CurrentDate = CurrentDate ?? HistoryDates.First();
                 await loadDataByDate(CurrentDate.Value, useCache);
+
+                if (CurrentDate >= DateTime.Today) Common.TileAndToast.ClearBadge();
             }
             catch (Exception e)
             {

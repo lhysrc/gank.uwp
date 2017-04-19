@@ -37,7 +37,7 @@ namespace GankIO.Common
                     return;
                 }
             }
-            clearBadge();                     
+            ClearBadge();                     
             await UpdateTileByPhotos();
         }
         private static void UpdateBadgeGlyph(string badgeGlyphValue)
@@ -65,7 +65,7 @@ namespace GankIO.Common
             // And update the badge
             badgeUpdater.Update(badge);
         }
-        private static void clearBadge()
+        public static void ClearBadge()
         {
             BadgeUpdateManager.CreateBadgeUpdaterForApplication().Clear();
         }
