@@ -2,6 +2,7 @@
   "dependencies": {
     "AsyncStackTraceEx": "1.0.1.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "Microsoft.Services.Store.SDK": "10.1703.19001",
     "Microsoft.Toolkit.Uwp.UI.Controls": "1.2.0",
     "Newtonsoft.Json": "9.0.1",
     "Template10": "1.1.12"
